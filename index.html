@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>等级点击·额外奖励｜晋升话术三语</title>
+    <title>等级点击·额外奖励｜晋升话术三语 (GitHub优化版)</title>
     <style>
         * {
             margin: 0;
@@ -312,7 +312,7 @@
     </style>
 </head>
 <body>
-<div class="glass-card">
+<div class="glass-card" id="appContainer">
     <h1>✨ 等级点击·额外奖励 <span>晋升话术</span></h1>
     <div class="sub">点击等级按钮，填写额外奖励%，话术自动更新</div>
 
@@ -321,31 +321,31 @@
         <div class="level-pair">
             <div class="level-block">
                 <span class="level-label">⬅️ 从</span>
-                <div class="level-buttons" id="fromLevelGroup">
-                    <button class="level-btn active" data-level="R1">R1</button>
-                    <button class="level-btn" data-level="R2">R2</button>
-                    <button class="level-btn" data-level="R3">R3</button>
-                    <button class="level-btn" data-level="R4">R4</button>
-                    <button class="level-btn" data-level="R5">R5</button>
-                    <button class="level-btn" data-level="R6">R6</button>
-                    <button class="level-btn" data-level="R7">R7</button>
-                    <button class="level-btn" data-level="R8">R8</button>
-                    <button class="level-btn" data-level="R9">R9</button>
+                <div class="level-buttons" data-group="fromLevel">
+                    <button class="level-btn active" data-value="R1">R1</button>
+                    <button class="level-btn" data-value="R2">R2</button>
+                    <button class="level-btn" data-value="R3">R3</button>
+                    <button class="level-btn" data-value="R4">R4</button>
+                    <button class="level-btn" data-value="R5">R5</button>
+                    <button class="level-btn" data-value="R6">R6</button>
+                    <button class="level-btn" data-value="R7">R7</button>
+                    <button class="level-btn" data-value="R8">R8</button>
+                    <button class="level-btn" data-value="R9">R9</button>
                 </div>
             </div>
             <span class="arrow-icon">→</span>
             <div class="level-block">
                 <span class="level-label">到 ➡️</span>
-                <div class="level-buttons" id="toLevelGroup">
-                    <button class="level-btn" data-level="R1">R1</button>
-                    <button class="level-btn active" data-level="R2">R2</button>
-                    <button class="level-btn" data-level="R3">R3</button>
-                    <button class="level-btn" data-level="R4">R4</button>
-                    <button class="level-btn" data-level="R5">R5</button>
-                    <button class="level-btn" data-level="R6">R6</button>
-                    <button class="level-btn" data-level="R7">R7</button>
-                    <button class="level-btn" data-level="R8">R8</button>
-                    <button class="level-btn" data-level="R9">R9</button>
+                <div class="level-buttons" data-group="toLevel">
+                    <button class="level-btn" data-value="R1">R1</button>
+                    <button class="level-btn active" data-value="R2">R2</button>
+                    <button class="level-btn" data-value="R3">R3</button>
+                    <button class="level-btn" data-value="R4">R4</button>
+                    <button class="level-btn" data-value="R5">R5</button>
+                    <button class="level-btn" data-value="R6">R6</button>
+                    <button class="level-btn" data-value="R7">R7</button>
+                    <button class="level-btn" data-value="R8">R8</button>
+                    <button class="level-btn" data-value="R9">R9</button>
                 </div>
             </div>
         </div>
@@ -357,32 +357,32 @@
             <span class="extra-label">🎁 额外奖励 %</span>
             <input type="number" id="extraPercent" class="percent-input" value="0" min="0" max="100" step="0.1">
         </div>
-        <button class="copy-btn" id="copyPromoBtn">📋 复制晋升话术</button>
+        <button class="copy-btn" data-copy="promo">📋 复制晋升话术</button>
     </div>
 
     <!-- 语言切换 -->
     <div class="lang-row">
-        <div class="lang-group" id="promoLangGroup">
-            <button class="lang-btn active" data-lang="cn">🇨🇳 中文</button>
-            <button class="lang-btn" data-lang="en">🇬🇧 EN</button>
-            <button class="lang-btn" data-lang="my">🇲🇾 BM</button>
+        <div class="lang-group" data-group="lang">
+            <button class="lang-btn active" data-value="cn">🇨🇳 中文</button>
+            <button class="lang-btn" data-value="en">🇬🇧 EN</button>
+            <button class="lang-btn" data-value="my">🇲🇾 BM</button>
         </div>
     </div>
 
     <!-- 晋升卡片 -->
     <div class="promo-card" id="promoCard">
-        <div class="promo-title" id="promoTitle">🎉 恭喜您成功从 <span class="highlight" id="fromSpan">R1</span> 晋升至 <span class="highlight" id="toSpan">R3</span> 等级！</div>
+        <div class="promo-title" id="promoTitle">🎉 恭喜您成功从 <span class="highlight" id="fromSpan">R1</span> 晋升至 <span class="highlight" id="toSpan">R2</span> 等级！</div>
         <div id="refundLine" class="refund-line" style="font-size:1.3rem; margin-bottom:0.5rem; color:#1b543e; font-weight:500;">✨ R1 费用已全额退还，继续加油！🚀</div>
         
         <div class="income-banner">
-            <div class="income-item"><span class="income-label">每日收入</span><div class="income-value" id="dailyVal">RM 45.00</div></div>
-            <div class="income-item"><span class="income-label">30天累计</span><div class="income-value" id="monthlyVal">RM 1,350.00</div></div>
-            <div class="income-item"><span class="income-label">365天累计</span><div class="income-value" id="yearlyVal">RM 16,425.00</div></div>
+            <div class="income-item"><span class="income-label">每日收入</span><div class="income-value" id="dailyVal">RM 15.00</div></div>
+            <div class="income-item"><span class="income-label">30天累计</span><div class="income-value" id="monthlyVal">RM 450.00</div></div>
+            <div class="income-item"><span class="income-label">365天累计</span><div class="income-value" id="yearlyVal">RM 5,475.00</div></div>
         </div>
 
         <div class="message-body" id="promoBody">
             这是您财富增长道路上的重要升级，属于您的稳健增值之旅，现已正式启航！🐄💪<br><br>
-            从 R1 到 R3，您已解锁更多订单权限，收入机会持续增加，未来还有更多惊喜等着您！🥛
+            从 R1 到 R2，您已解锁更多订单权限，收入机会持续增加，未来还有更多惊喜等着您！🥛
         </div>
 
         <div class="ps" id="promoPs">
@@ -402,11 +402,15 @@
 
 <script>
 (function() {
-    // 当前等级
-    let fromLevel = 'R1';
-    let toLevel = 'R2';   // 默认 R1→R2
-    let currentLang = 'cn';
-    
+    const container = document.getElementById('appContainer');
+
+    // 状态
+    let state = {
+        fromLevel: 'R1',
+        toLevel: 'R2',
+        currentLang: 'cn'
+    };
+
     // 等级数据
     const levelData = {
         'R1': { price: 150, daily: 5, monthly: 150, yearly: 1825 },
@@ -432,25 +436,23 @@
     const promoTitle = document.getElementById('promoTitle');
     const extraInput = document.getElementById('extraPercent');
 
-    // 格式化数字
+    // 格式化
     function formatMoney(value) {
         return value.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
     }
 
-    // 获取额外奖励百分比
     function getExtraPercent() {
         return parseFloat(extraInput.value) || 0;
     }
 
-    // 计算升级奖金 (基于from等级的价格 * 百分比)
     function getBonusAmount() {
         const percent = getExtraPercent();
         if (percent <= 0) return 0;
-        const fromPrice = levelData[fromLevel].price;
+        const fromPrice = levelData[state.fromLevel].price;
         return (percent / 100) * fromPrice;
     }
 
-    // 生成完整的晋升话术 (三语)
+    // 生成完整话术 (用于复制)
     function generateFullSpeech(lang, from, to, bonus) {
         const data = levelData[to];
         const daily = formatMoney(data.daily);
@@ -459,189 +461,155 @@
         const hasBonus = bonus > 0;
         const bonusText = bonus.toFixed(2);
 
-        // 标题行 (各种语言一致但为了统一)
-        let title = '';
-        let refundText = '';
-        let bodyMain = '';
-        let psText = '';
+        let title = '', refundText = '', bodyMain = '', psText = '', incomeBlock = '';
 
         if (lang === 'cn') {
             title = `🎉 恭喜您成功从 ${from} 晋升至 ${to} 等级！`;
-            if (hasBonus) {
-                refundText = `${from}费用已全额退还，升级奖金*RM${bonusText}* 也已发放至您的 RS 账户，继续加油！🚀`;
-            } else {
-                refundText = `${from} 费用已全额退还，继续加油！🚀`;
-            }
+            refundText = hasBonus ? `${from}费用已全额退还，升级奖金*RM${bonusText}* 也已发放至您的 RS 账户，继续加油！🚀` : `${from} 费用已全额退还，继续加油！🚀`;
+            incomeBlock = `📈 收入稳健增长\n每日收入预估：*RM ${daily}*\n30 天累计收入：*RM ${monthly}*\n365 天累计收入：*RM ${yearly}*`;
             bodyMain = `这是您财富增长道路上的重要升级，属于您的稳健增值之旅，现已正式启航！🐄💪\n\n从 ${from} 到 ${to}，您已解锁更多订单权限，收入机会持续增加，未来还有更多惊喜等着您！🥛`;
             psText = `PS：只管用心去做、踏实前行，时间自会给你最好的答案`;
         } else if (lang === 'en') {
             title = `🎉 Congratulations on your successful promotion from ${from} to ${to}!`;
-            if (hasBonus) {
-                refundText = `${from} fee fully refunded, upgrade bonus *RM${bonusText}* has been credited to your RS account. Keep it up! 🚀`;
-            } else {
-                refundText = `${from} fee fully refunded. Keep it up! 🚀`;
-            }
+            refundText = hasBonus ? `${from} fee fully refunded, upgrade bonus *RM${bonusText}* has been credited to your RS account. Keep it up! 🚀` : `${from} fee fully refunded. Keep it up! 🚀`;
+            incomeBlock = `📈 Steady Income Growth\nEstimated daily income: *RM ${daily}*\n30-day cumulative: *RM ${monthly}*\n365-day cumulative: *RM ${yearly}*`;
             bodyMain = `This is a significant upgrade on your wealth growth path. Your journey of steady value appreciation has now officially begun! 🐄💪\n\nFrom ${from} to ${to}, you have unlocked more order privileges and income opportunities. More surprises await you in the future! 🥛`;
             psText = `PS: Just do it with heart and move forward steadily; time will give you the best answer.`;
         } else { // my
             title = `🎉 Tahniah atas kenaikan pangkat anda dari ${from} ke ${to}!`;
-            if (hasBonus) {
-                refundText = `Yuran ${from} dikembalikan sepenuhnya, bonus naik taraf *RM${bonusText}* telah dikreditkan ke akaun RS anda. Teruskan! 🚀`;
-            } else {
-                refundText = `Yuran ${from} dikembalikan sepenuhnya. Teruskan! 🚀`;
-            }
+            refundText = hasBonus ? `Yuran ${from} dikembalikan sepenuhnya, bonus naik taraf *RM${bonusText}* telah dikreditkan ke akaun RS anda. Teruskan! 🚀` : `Yuran ${from} dikembalikan sepenuhnya. Teruskan! 🚀`;
+            incomeBlock = `📈 Pertumbuhan Pendapatan Stabil\nAnggaran pendapatan harian: *RM ${daily}*\nKumulatif 30 hari: *RM ${monthly}*\nKumulatif 365 hari: *RM ${yearly}*`;
             bodyMain = `Ini adalah peningkatan penting dalam laluan pertumbuhan kekayaan anda. Perjalanan peningkatan nilai stabil anda kini secara rasmi bermula! 🐄💪\n\nDari ${from} ke ${to}, anda telah membuka lebih banyak keistimewaan pesanan dan peluang pendapatan. Lebih banyak kejutan menanti anda pada masa hadapan! 🥛`;
             psText = `PS: Lakukan dengan hati dan maju dengan mantap; masa akan memberikan jawapan terbaik.`;
-        }
-
-        // 收入区块
-        let incomeBlock = '';
-        if (lang === 'cn') {
-            incomeBlock = `📈 收入稳健增长\n每日收入预估：*RM ${daily}*\n30 天累计收入：*RM ${monthly}*\n365 天累计收入：*RM ${yearly}*`;
-        } else if (lang === 'en') {
-            incomeBlock = `📈 Steady Income Growth\nEstimated daily income: *RM ${daily}*\n30-day cumulative: *RM ${monthly}*\n365-day cumulative: *RM ${yearly}*`;
-        } else {
-            incomeBlock = `📈 Pertumbuhan Pendapatan Stabil\nAnggaran pendapatan harian: *RM ${daily}*\nKumulatif 30 hari: *RM ${monthly}*\nKumulatif 365 hari: *RM ${yearly}*`;
         }
 
         return `${title}\n\n${refundText}\n\n${incomeBlock}\n\n${bodyMain}\n\n${psText}`;
     }
 
+    // 同步按钮激活状态
+    function syncActiveClasses() {
+        // from
+        document.querySelectorAll('[data-group="fromLevel"] .level-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.value === state.fromLevel);
+        });
+        // to
+        document.querySelectorAll('[data-group="toLevel"] .level-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.value === state.toLevel);
+        });
+        // 语言
+        document.querySelectorAll('[data-group="lang"] .lang-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.value === state.currentLang);
+        });
+    }
+
     // 刷新UI
     function refreshUI() {
         const bonus = getExtraPercent() > 0 ? getBonusAmount() : 0;
-        const from = fromLevel;
-        const to = toLevel;
+        const from = state.fromLevel;
+        const to = state.toLevel;
         const data = levelData[to];
+        const lang = state.currentLang;
 
         // 更新标题中的等级
         fromSpan.innerText = from;
         toSpan.innerText = to;
 
-        // 更新收入数字
+        // 收入数字
         dailyVal.innerHTML = `RM ${formatMoney(data.daily)}`;
         monthlyVal.innerHTML = `RM ${formatMoney(data.monthly)}`;
         yearlyVal.innerHTML = `RM ${formatMoney(data.yearly)}`;
 
-        // 根据语言和是否有奖金更新各区域
-        if (currentLang === 'cn') {
+        // 根据语言更新文本
+        if (lang === 'cn') {
             promoTitle.innerHTML = `🎉 恭喜您成功从 <span class="highlight">${from}</span> 晋升至 <span class="highlight">${to}</span> 等级！`;
-            if (bonus > 0) {
-                refundLine.innerHTML = `✨ ${from}费用已全额退还，升级奖金*RM${bonus.toFixed(2)}* 也已发放至您的 RS 账户，继续加油！🚀`;
-            } else {
-                refundLine.innerHTML = `✨ ${from} 费用已全额退还，继续加油！🚀`;
-            }
+            refundLine.innerHTML = bonus > 0 
+                ? `✨ ${from}费用已全额退还，升级奖金*RM${bonus.toFixed(2)}* 也已发放至您的 RS 账户，继续加油！🚀`
+                : `✨ ${from} 费用已全额退还，继续加油！🚀`;
             promoBody.innerHTML = `这是您财富增长道路上的重要升级，属于您的稳健增值之旅，现已正式启航！🐄💪<br><br>从 ${from} 到 ${to}，您已解锁更多订单权限，收入机会持续增加，未来还有更多惊喜等着您！🥛`;
             promoPs.innerHTML = `<strong>PS：</strong>只管用心去做、踏实前行，时间自会给你最好的答案`;
-        } else if (currentLang === 'en') {
+        } else if (lang === 'en') {
             promoTitle.innerHTML = `🎉 Congratulations on your successful promotion from <span class="highlight">${from}</span> to <span class="highlight">${to}</span>!`;
-            if (bonus > 0) {
-                refundLine.innerHTML = `✨ ${from} fee fully refunded, upgrade bonus *RM${bonus.toFixed(2)}* has been credited to your RS account. Keep it up! 🚀`;
-            } else {
-                refundLine.innerHTML = `✨ ${from} fee fully refunded. Keep it up! 🚀`;
-            }
+            refundLine.innerHTML = bonus > 0
+                ? `✨ ${from} fee fully refunded, upgrade bonus *RM${bonus.toFixed(2)}* has been credited to your RS account. Keep it up! 🚀`
+                : `✨ ${from} fee fully refunded. Keep it up! 🚀`;
             promoBody.innerHTML = `This is a significant upgrade on your wealth growth path. Your journey of steady value appreciation has now officially begun! 🐄💪<br><br>From ${from} to ${to}, you have unlocked more order privileges and income opportunities. More surprises await you in the future! 🥛`;
             promoPs.innerHTML = `<strong>PS:</strong> Just do it with heart and move forward steadily; time will give you the best answer.`;
         } else { // my
             promoTitle.innerHTML = `🎉 Tahniah atas kenaikan pangkat anda dari <span class="highlight">${from}</span> ke <span class="highlight">${to}</span>!`;
-            if (bonus > 0) {
-                refundLine.innerHTML = `✨ Yuran ${from} dikembalikan sepenuhnya, bonus naik taraf *RM${bonus.toFixed(2)}* telah dikreditkan ke akaun RS anda. Teruskan! 🚀`;
-            } else {
-                refundLine.innerHTML = `✨ Yuran ${from} dikembalikan sepenuhnya. Teruskan! 🚀`;
-            }
+            refundLine.innerHTML = bonus > 0
+                ? `✨ Yuran ${from} dikembalikan sepenuhnya, bonus naik taraf *RM${bonus.toFixed(2)}* telah dikreditkan ke akaun RS anda. Teruskan! 🚀`
+                : `✨ Yuran ${from} dikembalikan sepenuhnya. Teruskan! 🚀`;
             promoBody.innerHTML = `Ini adalah peningkatan penting dalam laluan pertumbuhan kekayaan anda. Perjalanan peningkatan nilai stabil anda kini secara rasmi bermula! 🐄💪<br><br>Dari ${from} ke ${to}, anda telah membuka lebih banyak keistimewaan pesanan dan peluang pendapatan. Lebih banyak kejutan menanti anda pada masa hadapan! 🥛`;
             promoPs.innerHTML = `<strong>PS:</strong> Lakukan dengan hati dan maju dengan mantap; masa akan memberikan jawapan terbaik.`;
         }
     }
 
-    // 处理等级点击 (from)
-    const fromBtns = document.querySelectorAll('#fromLevelGroup .level-btn');
-    fromBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            fromBtns.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            fromLevel = btn.dataset.level;
+    // 事件代理
+    container.addEventListener('click', (e) => {
+        const target = e.target;
 
-            // 确保 from < to，如果无效则自动调整 to 为 from+1
-            const fromNum = parseInt(fromLevel.replace('R',''));
-            const toNum = parseInt(toLevel.replace('R',''));
-            if (fromNum >= toNum) {
-                // 找到下一个可用的to
-                if (fromNum < 9) {
-                    toLevel = `R${fromNum + 1}`;
-                    // 更新to按钮激活状态
-                    toBtns.forEach(b => {
-                        b.classList.remove('active');
-                        if (b.dataset.level === toLevel) b.classList.add('active');
-                    });
-                } else {
-                    // from 是 R9，强制 to 也为 R9
-                    toLevel = 'R9';
-                    toBtns.forEach(b => {
-                        b.classList.remove('active');
-                        if (b.dataset.level === 'R9') b.classList.add('active');
-                    });
-                }
-            }
-            refreshUI();
-        });
-    });
+        // 等级按钮
+        if (target.classList.contains('level-btn')) {
+            const group = target.closest('[data-group]')?.dataset.group;
+            const value = target.dataset.value;
+            if (!group || !value) return;
 
-    // to 等级点击
-    const toBtns = document.querySelectorAll('#toLevelGroup .level-btn');
-    toBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            const newTo = btn.dataset.level;
-            const fromNum = parseInt(fromLevel.replace('R',''));
-            const toNum = parseInt(newTo.replace('R',''));
-            
-            if (toNum <= fromNum) {
-                // 无效晋升，自动调整为 from+1 (如果可能)
-                if (fromNum < 9) {
-                    toLevel = `R${fromNum + 1}`;
-                } else {
-                    toLevel = 'R9';
+            if (group === 'fromLevel') {
+                const fromNum = parseInt(value.replace('R',''));
+                const toNum = parseInt(state.toLevel.replace('R',''));
+                // 自动修正 to
+                if (fromNum >= toNum) {
+                    if (fromNum < 9) {
+                        state.toLevel = `R${fromNum + 1}`;
+                    } else {
+                        state.toLevel = 'R9';
+                    }
                 }
+                state.fromLevel = value;
+            } else if (group === 'toLevel') {
+                const fromNum = parseInt(state.fromLevel.replace('R',''));
+                const toNum = parseInt(value.replace('R',''));
+                if (toNum <= fromNum) {
+                    if (fromNum < 9) {
+                        state.toLevel = `R${fromNum + 1}`;
+                    } else {
+                        state.toLevel = 'R9';
+                    }
+                } else {
+                    state.toLevel = value;
+                }
+            } else if (group === 'lang') {
+                state.currentLang = value;
             } else {
-                toLevel = newTo;
+                return;
             }
 
-            // 更新按钮激活
-            toBtns.forEach(b => {
-                b.classList.移除('active');
-                if (b.dataset.level === toLevel) b.classList.add('active');
-            });
+            syncActiveClasses();
             refreshUI();
-        });
+            e.preventDefault();
+        }
+
+        // 复制按钮
+        if (target.classList.contains('copy-btn') || target.closest('.copy-btn')) {
+            const btn = target.closest('.copy-btn');
+            if (!btn) return;
+            const bonus = getExtraPercent() > 0 ? getBonusAmount() : 0;
+            const fullText = generateFullSpeech(state.currentLang, state.fromLevel, state.toLevel, bonus);
+            navigator.clipboard.writeText(fullText).then(() => {
+                const originalText = btn.innerText;
+                btn.innerText = '✅ 已复制！';
+                btn.classList.add('copy-success');
+                setTimeout(() => {
+                    btn.innerText = originalText;
+                    btn.classList.移除('copy-success');
+                }, 1500);
+            }).catch(() => alert('复制失败，请手动复制'));
+            e.preventDefault();
+        }
     });
 
-    // 语言切换
-    const langBtns = 文档。querySelectorAll('#promoLangGroup .lang-btn');
-    langBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            langBtns.forEach(b => b.classList.移除('active'));
-            btn.classList.add('active');
-            currentLang = btn.dataset.lang;
-            refreshUI();
-        });
-    });
-
-    // 百分比监听
-    extraInput.addEventListener('input'， refreshUI);
-
-    // 复制按钮
-    文档.getElementById('copyPromoBtn').addEventListener('click', function() {
-        const bonus = getExtraPercent() > 0 ? getBonusAmount() : 0;
-        const fullText = generateFullSpeech(currentLang, fromLevel, toLevel, bonus);
-        navigator.clipboard.writeText(fullText).键，然后(() => {
-            this.innerText = '✅ 已复制！';
-            this.classList.add('copy-success');
-            setTimeout(() => {
-                this.innerText = '📋 复制晋升话术';
-                this.classList.移除('copy-success');
-            }, 1500);
-        }).catch(() => alert('复制失败'));
-    });
+    // 百分比输入监听
+    extraInput.addEventListener('input', refreshUI);
 
     // 生成等级速览
     function renderLevelGrid() {
@@ -655,6 +623,8 @@
         grid.innerHTML = html;
     }
 
+    // 初始化激活类 + 渲染
+    syncActiveClasses();
     renderLevelGrid();
     refreshUI();
 })();
