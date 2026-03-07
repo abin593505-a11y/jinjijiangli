@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>等级点击·额外奖励｜晋升话术三语</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+        }
+        body {
+            background: linear-gradient(145deg, #e9f7ef 0%, #d8ede2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem 1rem;
+        }
+        .glass-card {
+            max-width: 1200px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(12px);
+            border-radius: 70px;
+            box-shadow: 0 30px 60px rgba(10, 60, 35, 0.3);
+            padding: 2.5rem 2.5rem;
+            border: 2px solid rgba(210, 245, 220, 0.7);
+        }
+        h1 {
+            font-size: 2.4rem;
+            font-weight: 700;
+            color: #164e38;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 0.5rem;
+        }
+        h1 span {
+            background: #fbebc0;
+            padding: 0.3rem 1.5rem;
+            border-radius: 60px;
+            font-size: 1.2rem;
+            color: #5d491a;
+        }
+        .sub {
+            font-size: 1.15rem;
+            color: #2e694d;
+            margin-bottom: 2rem;
+            border-left: 6px solid #dbb66c;
+            padding-left: 1.8rem;
+            background: #f0fbf5;
+            border-radius: 0 50px 50px 0;
+            width: fit-content;
+            padding: 0.8rem 2.5rem;
+        }
+
+        /* 等级点击区域 */
+        .level-click-row {
+            background: #def0e7;
+            border-radius: 90px;
+            padding: 1.5rem 2rem;
+            margin-bottom: 2rem;
+            border: 2px solid #b2dec5;
+        }
+        .level-pair {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+        .level-block {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+        .level-label {
+            font-weight: 600;
+            color: #1d5c41;
+            font-size: 1.1rem;
+            background: white;
+            padding: 0.3rem 2rem;
+            border-radius: 60px;
+        }
+        .level-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+        .level-btn {
+            background: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: #1d543e;
+            cursor: pointer;
+            box-shadow: 0 6px 12px rgba(0,40,10,0.15);
+            transition: 0.1s;
+            border: 2px solid transparent;
+            min-width: 70px;
+        }
+        .level-btn.active {
+            background: #1e4b3e;
+            color: white;
+            box-shadow: 0 10px 18px -6px #1b6148;
+            border-color: #fbeeb3;
+        }
+        .arrow-icon {
+            font-size: 2.8rem;
+            color: #679f82;
+            font-weight: 300;
+        }
+
+        /* 额外奖励 + 复制整合行 */
+        .extra-copy-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            background: #e3f3ea;
+            border-radius: 80px;
+            padding: 1rem 2rem;
+            margin-bottom: 2rem;
+            border: 2px solid #b1dbc2;
+        }
+        .extra-percent {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .extra-label {
+            font-weight: 700;
+            color: #1a573b;
+            font-size: 1.1rem;
+            background: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 60px;
+        }
+        .percent-input {
+            width: 120px;
+            padding: 12px 20px;
+            border: 2px solid #9dceb4;
+            border-radius: 60px;
+            font-weight: 600;
+            color: #1d4b33;
+            font-size: 1.2rem;
+            text-align: center;
+        }
+        .percent-input:focus {
+            outline: none;
+            border-color: #1e7e5a;
+        }
+        .copy-btn {
+            background: #1e4b3e;
+            border: none;
+            color: white;
+            padding: 14px 40px;
+            border-radius: 60px;
+            font-weight: 700;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            box-shadow: 0 8px 18px rgba(0,70,30,0.4);
+            border: 2px solid #f8e5a2;
+            white-space: nowrap;
+        }
+        .copy-btn:hover {
+            background: #136545;
+            transform: scale(1.02);
+        }
+        .copy-success {
+            background: #0f7a4f !important;
+        }
+
+        /* 语言切换 */
+        .lang-row {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 1.5rem;
+        }
+        .lang-group {
+            display: flex;
+            gap: 8px;
+            background: #e0f0e8;
+            padding: 0.5rem;
+            border-radius: 60px;
+        }
+        .lang-btn {
+            background: white;
+            border: 1px solid #b1d8c0;
+            padding: 10px 28px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            color: #1b543e;
+        }
+        .lang-btn.active {
+            background: #1e4b3e;
+            color: white;
+            border-color: #1e4b3e;
+        }
+
+        /* 晋升卡片 */
+        .promo-card {
+            background: white;
+            border-radius: 60px;
+            padding: 2.5rem 2.8rem;
+            box-shadow: inset 0 2px 10px rgba(255,255,255,0.8), 0 20px 40px -12px #154830;
+            border: 2px solid rgba(170, 220, 180, 0.8);
+            margin: 1.5rem 0 2rem;
+        }
+        .promo-title {
+            font-size: 2.2rem;
+            font-weight: 800;
+            line-height: 1.4;
+            color: #10402e;
+            margin-bottom: 1.5rem;
+        }
+        .promo-title .highlight {
+            background: #fbeec6;
+            padding: 0.2rem 1.2rem;
+            border-radius: 60px;
+            display: inline-block;
+            margin: 0 6px;
+        }
+        .income-banner {
+            background: #e6f5ed;
+            border-radius: 50px;
+            padding: 1.8rem 2rem;
+            margin: 1.5rem 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            gap: 20px;
+            border: 2px solid #b3dec6;
+        }
+        .income-item {
+            text-align: center;
+            min-width: 140px;
+        }
+        .income-label {
+            font-size: 1rem;
+            text-transform: uppercase;
+            color: #267353;
+            font-weight: 600;
+        }
+        .income-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #05422c;
+        }
+        .message-body {
+            font-size: 1.2rem;
+            line-height: 1.7;
+            color: #194432;
+            background: #f9fffd;
+            padding: 1.8rem 2.2rem;
+            border-radius: 50px;
+            border: 2px dashed #9bcbb2;
+            margin: 1.5rem 0;
+        }
+        .ps {
+            font-style: italic;
+            color: #4b7b63;
+            font-size: 1.1rem;
+            border-top: 2px solid #c2e0d0;
+            padding-top: 1.5rem;
+            text-align: center;
+        }
+        .ps strong {
+            background: #feefc0;
+            padding: 0.3rem 1.5rem;
+            border-radius: 60px;
+        }
+        .table-mini {
+            background: #ebf9f1;
+            border-radius: 50px;
+            padding: 1.5rem;
+            border: 1px solid #b2dac1;
+        }
+        .mini-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            margin: 1rem 0;
+        }
+        .level-summary {
+            background: white;
+            border-radius: 40px;
+            padding: 0.6rem 1rem;
+            min-width: 80px;
+            text-align: center;
+            border: 1px solid #c7e2d3;
+        }
+        .level-summary .lvl {
+            font-weight: 800;
+            color: #1e6242;
+        }
+    </style>
+</head>
+<body>
+<div class="glass-card">
+    <h1>✨ 等级点击·额外奖励 <span>晋升话术</span></h1>
+    <div class="sub">点击等级按钮，填写额外奖励%，话术自动更新</div>
+
+    <!-- 等级点击区域 -->
+    <div class="level-click-row">
+        <div class="level-pair">
+            <div class="level-block">
+                <span class="level-label">⬅️ 从</span>
+                <div class="level-buttons" id="fromLevelGroup">
+                    <button class="level-btn active" data-level="R1">R1</button>
+                    <button class="level-btn" data-level="R2">R2</button>
+                    <button class="level-btn" data-level="R3">R3</button>
+                    <button class="level-btn" data-level="R4">R4</button>
+                    <button class="level-btn" data-level="R5">R5</button>
+                    <button class="level-btn" data-level="R6">R6</button>
+                    <button class="level-btn" data-level="R7">R7</button>
+                    <button class="level-btn" data-level="R8">R8</button>
+                    <button class="level-btn" data-level="R9">R9</button>
+                </div>
+            </div>
+            <span class="arrow-icon">→</span>
+            <div class="level-block">
+                <span class="level-label">到 ➡️</span>
+                <div class="level-buttons" id="toLevelGroup">
+                    <button class="level-btn" data-level="R1">R1</button>
+                    <button class="level-btn active" data-level="R2">R2</button>
+                    <button class="level-btn" data-level="R3">R3</button>
+                    <button class="level-btn" data-level="R4">R4</button>
+                    <button class="level-btn" data-level="R5">R5</button>
+                    <button class="level-btn" data-level="R6">R6</button>
+                    <button class="level-btn" data-level="R7">R7</button>
+                    <button class="level-btn" data-level="R8">R8</button>
+                    <button class="level-btn" data-level="R9">R9</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 额外奖励 + 复制按钮整合行 -->
+    <div class="extra-copy-row">
+        <div class="extra-percent">
+            <span class="extra-label">🎁 额外奖励 %</span>
+            <input type="number" id="extraPercent" class="percent-input" value="0" min="0" max="100" step="0.1">
+        </div>
+        <button class="copy-btn" id="copyPromoBtn">📋 复制晋升话术</button>
+    </div>
+
+    <!-- 语言切换 -->
+    <div class="lang-row">
+        <div class="lang-group" id="promoLangGroup">
+            <button class="lang-btn active" data-lang="cn">🇨🇳 中文</button>
+            <button class="lang-btn" data-lang="en">🇬🇧 EN</button>
+            <button class="lang-btn" data-lang="my">🇲🇾 BM</button>
+        </div>
+    </div>
+
+    <!-- 晋升卡片 -->
+    <div class="promo-card" id="promoCard">
+        <div class="promo-title" id="promoTitle">🎉 恭喜您成功从 <span class="highlight" id="fromSpan">R1</span> 晋升至 <span class="highlight" id="toSpan">R3</span> 等级！</div>
+        <div id="refundLine" class="refund-line" style="font-size:1.3rem; margin-bottom:0.5rem; color:#1b543e; font-weight:500;">✨ R1 费用已全额退还，继续加油！🚀</div>
+        
+        <div class="income-banner">
+            <div class="income-item"><span class="income-label">每日收入</span><div class="income-value" id="dailyVal">RM 45.00</div></div>
+            <div class="income-item"><span class="income-label">30天累计</span><div class="income-value" id="monthlyVal">RM 1,350.00</div></div>
+            <div class="income-item"><span class="income-label">365天累计</span><div class="income-value" id="yearlyVal">RM 16,425.00</div></div>
+        </div>
+
+        <div class="message-body" id="promoBody">
+            这是您财富增长道路上的重要升级，属于您的稳健增值之旅，现已正式启航！🐄💪<br><br>
+            从 R1 到 R3，您已解锁更多订单权限，收入机会持续增加，未来还有更多惊喜等着您！🥛
+        </div>
+
+        <div class="ps" id="promoPs">
+            <strong>PS：</strong>只管用心去做、踏实前行，时间自会给你最好的答案
+        </div>
+    </div>
+
+    <!-- 等级速览 -->
+    <div class="table-mini">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+            <h3 style="color:#1a543e;">📊 等级收益参考</h3>
+            <span style="color:#527a64;">晋升后等级收入</span>
+        </div>
+        <div class="mini-grid" id="levelGrid"></div>
+    </div>
+</div>
+
+<script>
+(function() {
+    // 当前等级
+    let fromLevel = 'R1';
+    let toLevel = 'R2';   // 默认 R1→R2
+    let currentLang = 'cn';
+    
+    // 等级数据
+    const levelData = {
+        'R1': { price: 150, daily: 5, monthly: 150, yearly: 1825 },
+        'R2': { price: 450, daily: 15, monthly: 450, yearly: 5475 },
+        'R3': { price: 1350, daily: 45, monthly: 1350, yearly: 16425 },
+        'R4': { price: 4480, daily: 160, monthly: 4800, yearly: 58400 },
+        'R5': { price: 13440, daily: 480, monthly: 14400, yearly: 175200 },
+        'R6': { price: 32400, daily: 1200, monthly: 36000, yearly: 438000 },
+        'R7': { price: 65000, daily: 2500, monthly: 75000, yearly: 912500 },
+        'R8': { price: 130000, daily: 5200, monthly: 156000, yearly: 1898000 },
+        'R9': { price: 259200, daily: 10800, monthly: 324000, yearly: 3942000 }
+    };
+
+    // DOM 元素
+    const fromSpan = document.getElementById('fromSpan');
+    const toSpan = document.getElementById('toSpan');
+    const refundLine = document.getElementById('refundLine');
+    const dailyVal = document.getElementById('dailyVal');
+    const monthlyVal = document.getElementById('monthlyVal');
+    const yearlyVal = document.getElementById('yearlyVal');
+    const promoBody = document.getElementById('promoBody');
+    const promoPs = document.getElementById('promoPs');
+    const promoTitle = document.getElementById('promoTitle');
+    const extraInput = document.getElementById('extraPercent');
+
+    // 格式化数字
+    function formatMoney(value) {
+        return value.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+    }
+
+    // 获取额外奖励百分比
+    function getExtraPercent() {
+        return parseFloat(extraInput.value) || 0;
+    }
+
+    // 计算升级奖金 (基于from等级的价格 * 百分比)
+    function getBonusAmount() {
+        const percent = getExtraPercent();
+        if (percent <= 0) return 0;
+        const fromPrice = levelData[fromLevel].price;
+        return (percent / 100) * fromPrice;
+    }
+
+    // 生成完整的晋升话术 (三语)
+    function generateFullSpeech(lang, from, to, bonus) {
+        const data = levelData[to];
+        const daily = formatMoney(data.daily);
+        const monthly = formatMoney(data.monthly);
+        const yearly = formatMoney(data.yearly);
+        const hasBonus = bonus > 0;
+        const bonusText = bonus.toFixed(2);
+
+        // 标题行 (各种语言一致但为了统一)
+        let title = '';
+        let refundText = '';
+        let bodyMain = '';
+        let psText = '';
+
+        if (lang === 'cn') {
+            title = `🎉 恭喜您成功从 ${from} 晋升至 ${to} 等级！`;
+            if (hasBonus) {
+                refundText = `${from}费用已全额退还，升级奖金*RM${bonusText}* 也已发放至您的 RS 账户，继续加油！🚀`;
+            } else {
+                refundText = `${from} 费用已全额退还，继续加油！🚀`;
+            }
+            bodyMain = `这是您财富增长道路上的重要升级，属于您的稳健增值之旅，现已正式启航！🐄💪\n\n从 ${from} 到 ${to}，您已解锁更多订单权限，收入机会持续增加，未来还有更多惊喜等着您！🥛`;
+            psText = `PS：只管用心去做、踏实前行，时间自会给你最好的答案`;
+        } else if (lang === 'en') {
+            title = `🎉 Congratulations on your successful promotion from ${from} to ${to}!`;
+            if (hasBonus) {
+                refundText = `${from} fee fully refunded, upgrade bonus *RM${bonusText}* has been credited to your RS account. Keep it up! 🚀`;
+            } else {
+                refundText = `${from} fee fully refunded. Keep it up! 🚀`;
+            }
+            bodyMain = `This is a significant upgrade on your wealth growth path. Your journey of steady value appreciation has now officially begun! 🐄💪\n\nFrom ${from} to ${to}, you have unlocked more order privileges and income opportunities. More surprises await you in the future! 🥛`;
+            psText = `PS: Just do it with heart and move forward steadily; time will give you the best answer.`;
+        } else { // my
+            title = `🎉 Tahniah atas kenaikan pangkat anda dari ${from} ke ${to}!`;
+            if (hasBonus) {
+                refundText = `Yuran ${from} dikembalikan sepenuhnya, bonus naik taraf *RM${bonusText}* telah dikreditkan ke akaun RS anda. Teruskan! 🚀`;
+            } else {
+                refundText = `Yuran ${from} dikembalikan sepenuhnya. Teruskan! 🚀`;
+            }
+            bodyMain = `Ini adalah peningkatan penting dalam laluan pertumbuhan kekayaan anda. Perjalanan peningkatan nilai stabil anda kini secara rasmi bermula! 🐄💪\n\nDari ${from} ke ${to}, anda telah membuka lebih banyak keistimewaan pesanan dan peluang pendapatan. Lebih banyak kejutan menanti anda pada masa hadapan! 🥛`;
+            psText = `PS: Lakukan dengan hati dan maju dengan mantap; masa akan memberikan jawapan terbaik.`;
+        }
+
+        // 收入区块
+        let incomeBlock = '';
+        if (lang === 'cn') {
+            incomeBlock = `📈 收入稳健增长\n每日收入预估：*RM ${daily}*\n30 天累计收入：*RM ${monthly}*\n365 天累计收入：*RM ${yearly}*`;
+        } else if (lang === 'en') {
+            incomeBlock = `📈 Steady Income Growth\nEstimated daily income: *RM ${daily}*\n30-day cumulative: *RM ${monthly}*\n365-day cumulative: *RM ${yearly}*`;
+        } else {
+            incomeBlock = `📈 Pertumbuhan Pendapatan Stabil\nAnggaran pendapatan harian: *RM ${daily}*\nKumulatif 30 hari: *RM ${monthly}*\nKumulatif 365 hari: *RM ${yearly}*`;
+        }
+
+        return `${title}\n\n${refundText}\n\n${incomeBlock}\n\n${bodyMain}\n\n${psText}`;
+    }
+
+    // 刷新UI
+    function refreshUI() {
+        const bonus = getExtraPercent() > 0 ? getBonusAmount() : 0;
+        const from = fromLevel;
+        const to = toLevel;
+        const data = levelData[to];
+
+        // 更新标题中的等级
+        fromSpan.innerText = from;
+        toSpan.innerText = to;
+
+        // 更新收入数字
+        dailyVal.innerHTML = `RM ${formatMoney(data.daily)}`;
+        monthlyVal.innerHTML = `RM ${formatMoney(data.monthly)}`;
+        yearlyVal.innerHTML = `RM ${formatMoney(data.yearly)}`;
+
+        // 根据语言和是否有奖金更新各区域
+        if (currentLang === 'cn') {
+            promoTitle.innerHTML = `🎉 恭喜您成功从 <span class="highlight">${from}</span> 晋升至 <span class="highlight">${to}</span> 等级！`;
+            if (bonus > 0) {
+                refundLine.innerHTML = `✨ ${from}费用已全额退还，升级奖金*RM${bonus.toFixed(2)}* 也已发放至您的 RS 账户，继续加油！🚀`;
+            } else {
+                refundLine.innerHTML = `✨ ${from} 费用已全额退还，继续加油！🚀`;
+            }
+            promoBody.innerHTML = `这是您财富增长道路上的重要升级，属于您的稳健增值之旅，现已正式启航！🐄💪<br><br>从 ${from} 到 ${to}，您已解锁更多订单权限，收入机会持续增加，未来还有更多惊喜等着您！🥛`;
+            promoPs.innerHTML = `<strong>PS：</strong>只管用心去做、踏实前行，时间自会给你最好的答案`;
+        } else if (currentLang === 'en') {
+            promoTitle.innerHTML = `🎉 Congratulations on your successful promotion from <span class="highlight">${from}</span> to <span class="highlight">${to}</span>!`;
+            if (bonus > 0) {
+                refundLine.innerHTML = `✨ ${from} fee fully refunded, upgrade bonus *RM${bonus.toFixed(2)}* has been credited to your RS account. Keep it up! 🚀`;
+            } else {
+                refundLine.innerHTML = `✨ ${from} fee fully refunded. Keep it up! 🚀`;
+            }
+            promoBody.innerHTML = `This is a significant upgrade on your wealth growth path. Your journey of steady value appreciation has now officially begun! 🐄💪<br><br>From ${from} to ${to}, you have unlocked more order privileges and income opportunities. More surprises await you in the future! 🥛`;
+            promoPs.innerHTML = `<strong>PS:</strong> Just do it with heart and move forward steadily; time will give you the best answer.`;
+        } else { // my
+            promoTitle.innerHTML = `🎉 Tahniah atas kenaikan pangkat anda dari <span class="highlight">${from}</span> ke <span class="highlight">${to}</span>!`;
+            if (bonus > 0) {
+                refundLine.innerHTML = `✨ Yuran ${from} dikembalikan sepenuhnya, bonus naik taraf *RM${bonus.toFixed(2)}* telah dikreditkan ke akaun RS anda. Teruskan! 🚀`;
+            } else {
+                refundLine.innerHTML = `✨ Yuran ${from} dikembalikan sepenuhnya. Teruskan! 🚀`;
+            }
+            promoBody.innerHTML = `Ini adalah peningkatan penting dalam laluan pertumbuhan kekayaan anda. Perjalanan peningkatan nilai stabil anda kini secara rasmi bermula! 🐄💪<br><br>Dari ${from} ke ${to}, anda telah membuka lebih banyak keistimewaan pesanan dan peluang pendapatan. Lebih banyak kejutan menanti anda pada masa hadapan! 🥛`;
+            promoPs.innerHTML = `<strong>PS:</strong> Lakukan dengan hati dan maju dengan mantap; masa akan memberikan jawapan terbaik.`;
+        }
+    }
+
+    // 处理等级点击 (from)
+    const fromBtns = document.querySelectorAll('#fromLevelGroup .level-btn');
+    fromBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            fromBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            fromLevel = btn.dataset.level;
+
+            // 确保 from < to，如果无效则自动调整 to 为 from+1
+            const fromNum = parseInt(fromLevel.replace('R',''));
+            const toNum = parseInt(toLevel.replace('R',''));
+            if (fromNum >= toNum) {
+                // 找到下一个可用的to
+                if (fromNum < 9) {
+                    toLevel = `R${fromNum + 1}`;
+                    // 更新to按钮激活状态
+                    toBtns.forEach(b => {
+                        b.classList.remove('active');
+                        if (b.dataset.level === toLevel) b.classList.add('active');
+                    });
+                } else {
+                    // from 是 R9，强制 to 也为 R9
+                    toLevel = 'R9';
+                    toBtns.forEach(b => {
+                        b.classList.remove('active');
+                        if (b.dataset.level === 'R9') b.classList.add('active');
+                    });
+                }
+            }
+            refreshUI();
+        });
+    });
+
+    // to 等级点击
+    const toBtns = document.querySelectorAll('#toLevelGroup .level-btn');
+    toBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const newTo = btn.dataset.level;
+            const fromNum = parseInt(fromLevel.replace('R',''));
+            const toNum = parseInt(newTo.replace('R',''));
+            
+            if (toNum <= fromNum) {
+                // 无效晋升，自动调整为 from+1 (如果可能)
+                if (fromNum < 9) {
+                    toLevel = `R${fromNum + 1}`;
+                } else {
+                    toLevel = 'R9';
+                }
+            } else {
+                toLevel = newTo;
+            }
+
+            // 更新按钮激活
+            toBtns.forEach(b => {
+                b.classList.移除('active');
+                if (b.dataset.level === toLevel) b.classList.add('active');
+            });
+            refreshUI();
+        });
+    });
+
+    // 语言切换
+    const langBtns = 文档。querySelectorAll('#promoLangGroup .lang-btn');
+    langBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            langBtns.forEach(b => b.classList.移除('active'));
+            btn.classList.add('active');
+            currentLang = btn.dataset.lang;
+            refreshUI();
+        });
+    });
+
+    // 百分比监听
+    extraInput.addEventListener('input'， refreshUI);
+
+    // 复制按钮
+    文档.getElementById('copyPromoBtn').addEventListener('click', function() {
+        const bonus = getExtraPercent() > 0 ? getBonusAmount() : 0;
+        const fullText = generateFullSpeech(currentLang, fromLevel, toLevel, bonus);
+        navigator.clipboard.writeText(fullText).键，然后(() => {
+            this.innerText = '✅ 已复制！';
+            this.classList.add('copy-success');
+            setTimeout(() => {
+                this.innerText = '📋 复制晋升话术';
+                this.classList.移除('copy-success');
+            }, 1500);
+        }).catch(() => alert('复制失败'));
+    });
+
+    // 生成等级速览
+    function renderLevelGrid() {
+        const grid = 文档.getElementById('levelGrid');
+        let html = '';
+        const levels = ['R1','R2','R3','R4','R5','R6','R7','R8','R9'];
+        levels.forEach(l => {
+            const d = levelData[l];
+            html += `<div class="level-summary"><span class="lvl">${l}</span><br><small>${d.daily}/日</small><br><small>RM ${d.monthly}/月</small></div>`;
+        });
+        grid.innerHTML = html;
+    }
+
+    renderLevelGrid();
+    refreshUI();
+})();
+</script>
+</body>
+</html>
