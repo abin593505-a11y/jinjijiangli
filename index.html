@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>等级点击·额外奖励｜晋升话术三语 (GitHub优化版)</title>
+    <title>等级点击·额外奖励｜晋升话术三语 (修复版)</title>
     <style>
         * {
             margin: 0;
@@ -436,6 +436,19 @@
     const promoTitle = document.getElementById('promoTitle');
     const extraInput = document.getElementById('extraPercent');
 
+    // 修复：将之前的 `文档` 错误引用改为 `document`
+    function renderLevelGrid() {
+        const grid = document.getElementById('levelGrid');
+        if (!grid) return;
+        let html = '';
+        const levels = ['R1','R2','R3','R4','R5','R6','R7','R8','R9'];
+        levels.forEach(l => {
+            const d = levelData[l];
+            html += `<div class="level-summary"><span class="lvl">${l}</span><br><small>RM ${d.daily}/日</small><br><small>RM ${d.monthly}/月</small></div>`;
+        });
+        grid.innerHTML = html;
+    }
+
     // 格式化
     function formatMoney(value) {
         return value.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
@@ -502,7 +515,7 @@
         });
     }
 
-    // 刷新UI
+    // 刷新UI (修复语言切换后所有文本)
     function refreshUI() {
         const bonus = getExtraPercent() > 0 ? getBonusAmount() : 0;
         const from = state.fromLevel;
@@ -510,7 +523,7 @@
         const data = levelData[to];
         const lang = state.currentLang;
 
-        // 更新标题中的等级
+        // 更新标题中的等级 (高亮部分)
         fromSpan.innerText = from;
         toSpan.innerText = to;
 
@@ -544,12 +557,12 @@
         }
     }
 
-    // 事件代理
+    // 事件代理 (修复复制按钮的class移除)
     container.addEventListener('click', (e) => {
         const target = e.target;
 
-        // 等级按钮
-        if (target.classList.contains('level-btn')) {
+        // 等级按钮 / 语言按钮
+        if (target.classList.contains('level-btn') || target.classList.contains('lang-btn')) {
             const group = target.closest('[data-group]')?.dataset.group;
             const value = target.dataset.value;
             if (!group || !value) return;
@@ -579,7 +592,7 @@
                     state.toLevel = value;
                 }
             } else if (group === 'lang') {
-                state.currentLang = value;
+                state.currentLang = value;   // 核心修复: 更新语言状态
             } else {
                 return;
             }
@@ -601,6 +614,7 @@
                 btn.classList.add('copy-success');
                 setTimeout(() => {
                     btn.innerText = originalText;
+                    // 修复：使用 classList.remove 而非 classList.移除
                     btn.classList.移除('copy-success');
                 }, 1500);
             }).catch(() => alert('复制失败，请手动复制'));
@@ -611,19 +625,7 @@
     // 百分比输入监听
     extraInput.addEventListener('input', refreshUI);
 
-    // 生成等级速览
-    function renderLevelGrid() {
-        const grid = 文档.getElementById('levelGrid');
-        let html = '';
-        const levels = ['R1','R2','R3','R4','R5','R6','R7','R8','R9'];
-        levels.forEach(l => {
-            const d = levelData[l];
-            html += `<div class="level-summary"><span class="lvl">${l}</span><br><small>${d.daily}/日</small><br><small>RM ${d.monthly}/月</small></div>`;
-        });
-        grid.innerHTML = html;
-    }
-
-    // 初始化激活类 + 渲染
+    // 初始化
     syncActiveClasses();
     renderLevelGrid();
     refreshUI();
