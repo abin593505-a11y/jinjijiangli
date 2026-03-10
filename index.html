@@ -614,8 +614,8 @@ ${psText}`;
             if (!group || !value) return;
 
             if (group === 'fromLevel') {
-                const fromNum = parseInt(value.替换('R',''));
-                const toNum = parseInt(state.toLevel.替换('R',''));
+                const fromNum = parseInt(value.replace('R',''));
+                const toNum = parseInt(state.toLevel.replace('R',''));
                 if (fromNum >= toNum) {
                     if (fromNum < 9) {
                         state.toLevel = `R${fromNum + 1}`;
@@ -625,8 +625,8 @@ ${psText}`;
                 }
                 state.fromLevel = value;
             } else if (group === 'toLevel') {
-                const fromNum = parseInt(state.fromLevel.替换('R',''));
-                const toNum = parseInt(value.替换('R',''));
+                const fromNum = parseInt(state.fromLevel.replace('R',''));
+                const toNum = parseInt(value.replace('R',''));
                 if (toNum <= fromNum) {
                     if (fromNum < 9) {
                         state.toLevel = `R${fromNum + 1}`;
@@ -652,13 +652,13 @@ ${psText}`;
             if (!btn) return;
             const bonus = getExtraPercent() > 0 ? getBonusAmount() : 0;
             const fullText = generateFullSpeech(state.currentLang, state.fromLevel, state.toLevel, bonus);
-            navigator.clipboard.writeText(fullText).键，然后(() => {
+            navigator.clipboard.writeText(fullText).then(() => {
                 const originalText = btn.innerText;
                 btn.innerText = '✅ 已复制！';
                 btn.classList.add('copy-success');
                 setTimeout(() => {
                     btn.innerText = originalText;
-                    btn.classList.移除('copy-success');
+                    btn.classList.remove('copy-success');
                 }, 1500);
             }).catch(() => alert('复制失败，请手动复制'));
             e.preventDefault();
