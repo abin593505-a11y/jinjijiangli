@@ -159,6 +159,14 @@
             outline: none;
             border-color: #1e7e5a;
         }
+        .bonus-calc-info {
+            font-size: 0.9rem;
+            color: #527a64;
+            background: #f0fbf5;
+            padding: 0.5rem 1rem;
+            border-radius: 40px;
+            border: 1px solid #c7e2d3;
+        }
         .copy-btn {
             background: #1e4b3e;
             border: none;
@@ -310,11 +318,12 @@
             color: #1e6242;
         }
     </style>
+<base target="_blank">
 </head>
 <body>
 <div class="glass-card" id="appContainer">
     <h1>✨ 等级点击·额外奖励 <span>晋升话术</span></h1>
-    <div class="sub">点击等级按钮，填写额外奖励%，话术自动更新</div>
+    <div class="sub">点击等级按钮，填写额外奖励%，话术自动更新 (奖励按目标等级金额计算)</div>
 
     <!-- 等级点击区域 -->
     <div class="level-click-row">
@@ -355,7 +364,8 @@
     <div class="extra-copy-row">
         <div class="extra-percent">
             <span class="extra-label">🎁 额外奖励 %</span>
-            <input type="number" id="extraPercent" class="percent-input" value="0" min="0" max="100" step="0.1">
+            <input type="number" id="extraPercent" class="percent-input" value="5" min="0" max="100" step="0.1">
+            <span id="bonusCalcInfo" class="bonus-calc-info">基于目标等级金额计算</span>
         </div>
         <button class="copy-btn" data-copy="promo">📋 复制晋升话术</button>
     </div>
@@ -372,8 +382,8 @@
     <!-- 晋升卡片 -->
     <div class="promo-card" id="promoCard">
         <div class="promo-title" id="promoTitle">🎉 恭喜您成功从 <span class="highlight" id="fromSpan">R1</span> 晋升至 <span class="highlight" id="toSpan">R2</span> 等级！</div>
-        <div id="refundLine" class="refund-line" style="font-size:1.3rem; margin-bottom:0.5rem; color:#1b543e; font-weight:500;">✨ R1 费用已全额退还，继续加油！🚀</div>
-        
+        <div id="refundLine" class="refund-line" style="font-size:1.3rem; margin-bottom:0.5rem; color:#1b543e; font-weight:500;">✨ R1费用已全额退还，升级奖金*RM22.50* 已发放至您的 RS 账户，继续加油！🚀</div>
+
         <div class="income-banner">
             <div class="income-item"><span class="income-label">每日收入</span><div class="income-value" id="dailyVal">RM 15.00</div></div>
             <div class="income-item"><span class="income-label">30天累计</span><div class="income-value" id="monthlyVal">RM 450.00</div></div>
@@ -404,14 +414,12 @@
 (function() {
     const container = document.getElementById('appContainer');
 
-    // 状态
     let state = {
         fromLevel: 'R1',
         toLevel: 'R2',
         currentLang: 'cn'
     };
 
-    // 等级数据
     const levelData = {
         'R1': { price: 150, daily: 5, monthly: 150, yearly: 1825 },
         'R2': { price: 450, daily: 15, monthly: 450, yearly: 5475 },
@@ -424,7 +432,6 @@
         'R9': { price: 259200, daily: 10800, monthly: 324000, yearly: 3942000 }
     };
 
-    // DOM 元素
     const fromSpan = document.getElementById('fromSpan');
     const toSpan = document.getElementById('toSpan');
     const refundLine = document.getElementById('refundLine');
@@ -435,8 +442,8 @@
     const promoPs = document.getElementById('promoPs');
     const promoTitle = document.getElementById('promoTitle');
     const extraInput = document.getElementById('extraPercent');
+    const bonusCalcInfo = document.getElementById('bonusCalcInfo');
 
-    // 修复：将之前的 `文档` 错误引用改为 `document`
     function renderLevelGrid() {
         const grid = document.getElementById('levelGrid');
         if (!grid) return;
@@ -449,7 +456,6 @@
         grid.innerHTML = html;
     }
 
-    // 格式化
     function formatMoney(value) {
         return value.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
     }
@@ -458,14 +464,27 @@
         return parseFloat(extraInput.value) || 0;
     }
 
+    // 核心逻辑：奖励始终基于目标等级（To Level）的金额计算
     function getBonusAmount() {
         const percent = getExtraPercent();
         if (percent <= 0) return 0;
-        const fromPrice = levelData[state.fromLevel].price;
-        return (percent / 100) * fromPrice;
+
+        // 始终基于目标等级的金额计算
+        const toPrice = levelData[state.toLevel].price;
+        return (percent / 100) * toPrice;
     }
 
-    // 生成完整话术 (用于复制)
+    function updateBonusCalcInfo() {
+        if (state.currentLang === 'cn') {
+            bonusCalcInfo.textContent = `基于 ${state.toLevel} 金额计算`;
+        } else if (state.currentLang === 'en') {
+            bonusCalcInfo.textContent = `Based on ${state.toLevel} amount`;
+        } else {
+            bonusCalcInfo.textContent = `Berdasarkan amaun ${state.toLevel}`;
+        }
+    }
+
+    // 生成完整话术 - 简化版本
     function generateFullSpeech(lang, from, to, bonus) {
         const data = levelData[to];
         const daily = formatMoney(data.daily);
@@ -478,44 +497,68 @@
 
         if (lang === 'cn') {
             title = `🎉 恭喜您成功从 ${from} 晋升至 ${to} 等级！`;
-            refundText = hasBonus ? `${from}费用已全额退还，升级奖金*RM${bonusText}* 也已发放至您的 RS 账户，继续加油！🚀` : `${from} 费用已全额退还，继续加油！🚀`;
-            incomeBlock = `📈 收入稳健增长\n每日收入预估：*RM ${daily}*\n30 天累计收入：*RM ${monthly}*\n365 天累计收入：*RM ${yearly}*`;
-            bodyMain = `这是您财富增长道路上的重要升级，属于您的稳健增值之旅，现已正式启航！🐄💪\n\n从 ${from} 到 ${to}，您已解锁更多订单权限，收入机会持续增加，未来还有更多惊喜等着您！🥛`;
+            refundText = hasBonus 
+                ? `${from}费用已全额退还，升级奖金*RM${bonusText}* 已发放至您的 RS 账户，继续加油！🚀`
+                : `${from} 费用已全额退还，继续加油！🚀`;
+            incomeBlock = `📈 收入稳健增长
+每日收入预估：*RM ${daily}*
+30 天累计收入：*RM ${monthly}*
+365 天累计收入：*RM ${yearly}*`;
+            bodyMain = `这是您财富增长道路上的重要升级，属于您的稳健增值之旅，现已正式启航！🐄💪
+
+从 ${from} 到 ${to}，您已解锁更多订单权限，收入机会持续增加，未来还有更多惊喜等着您！🥛`;
             psText = `PS：只管用心去做、踏实前行，时间自会给你最好的答案`;
         } else if (lang === 'en') {
             title = `🎉 Congratulations on your successful promotion from ${from} to ${to}!`;
-            refundText = hasBonus ? `${from} fee fully refunded, upgrade bonus *RM${bonusText}* has been credited to your RS account. Keep it up! 🚀` : `${from} fee fully refunded. Keep it up! 🚀`;
-            incomeBlock = `📈 Steady Income Growth\nEstimated daily income: *RM ${daily}*\n30-day cumulative: *RM ${monthly}*\n365-day cumulative: *RM ${yearly}*`;
-            bodyMain = `This is a significant upgrade on your wealth growth path. Your journey of steady value appreciation has now officially begun! 🐄💪\n\nFrom ${from} to ${to}, you have unlocked more order privileges and income opportunities. More surprises await you in the future! 🥛`;
+            refundText = hasBonus 
+                ? `${from} fee fully refunded, upgrade bonus *RM${bonusText}* has been credited to your RS account. Keep it up! 🚀`
+                : `${from} fee fully refunded. Keep it up! 🚀`;
+            incomeBlock = `📈 Steady Income Growth
+Estimated daily income: *RM ${daily}*
+30-day cumulative: *RM ${monthly}*
+365-day cumulative: *RM ${yearly}*`;
+            bodyMain = `This is a significant upgrade on your wealth growth path. Your journey of steady value appreciation has now officially begun! 🐄💪
+
+From ${from} to ${to}, you have unlocked more order privileges and income opportunities. More surprises await you in the future! 🥛`;
             psText = `PS: Just do it with heart and move forward steadily; time will give you the best answer.`;
         } else { // my
             title = `🎉 Tahniah atas kenaikan pangkat anda dari ${from} ke ${to}!`;
-            refundText = hasBonus ? `Yuran ${from} dikembalikan sepenuhnya, bonus naik taraf *RM${bonusText}* telah dikreditkan ke akaun RS anda. Teruskan! 🚀` : `Yuran ${from} dikembalikan sepenuhnya. Teruskan! 🚀`;
-            incomeBlock = `📈 Pertumbuhan Pendapatan Stabil\nAnggaran pendapatan harian: *RM ${daily}*\nKumulatif 30 hari: *RM ${monthly}*\nKumulatif 365 hari: *RM ${yearly}*`;
-            bodyMain = `Ini adalah peningkatan penting dalam laluan pertumbuhan kekayaan anda. Perjalanan peningkatan nilai stabil anda kini secara rasmi bermula! 🐄💪\n\nDari ${from} ke ${to}, anda telah membuka lebih banyak keistimewaan pesanan dan peluang pendapatan. Lebih banyak kejutan menanti anda pada masa hadapan! 🥛`;
+            refundText = hasBonus 
+                ? `Yuran ${from} dikembalikan sepenuhnya, bonus naik taraf *RM${bonusText}* telah dikreditkan ke akaun RS anda. Teruskan! 🚀`
+                : `Yuran ${from} dikembalikan sepenuhnya. Teruskan! 🚀`;
+            incomeBlock = `📈 Pertumbuhan Pendapatan Stabil
+Anggaran pendapatan harian: *RM ${daily}*
+Kumulatif 30 hari: *RM ${monthly}*
+Kumulatif 365 hari: *RM ${yearly}*`;
+            bodyMain = `Ini adalah peningkatan penting dalam laluan pertumbuhan kekayaan anda. Perjalanan peningkatan nilai stabil anda kini secara rasmi bermula! 🐄💪
+
+Dari ${from} ke ${to}, anda telah membuka lebih banyak keistimewaan pesanan dan peluang pendapatan. Lebih banyak kejutan menanti anda pada masa hadapan! 🥛`;
             psText = `PS: Lakukan dengan hati dan maju dengan mantap; masa akan memberikan jawapan terbaik.`;
         }
 
-        return `${title}\n\n${refundText}\n\n${incomeBlock}\n\n${bodyMain}\n\n${psText}`;
+        return `${title}
+
+${refundText}
+
+${incomeBlock}
+
+${bodyMain}
+
+${psText}`;
     }
 
-    // 同步按钮激活状态
     function syncActiveClasses() {
-        // from
         document.querySelectorAll('[data-group="fromLevel"] .level-btn').forEach(btn => {
             btn.classList.toggle('active', btn.dataset.value === state.fromLevel);
         });
-        // to
         document.querySelectorAll('[data-group="toLevel"] .level-btn').forEach(btn => {
             btn.classList.toggle('active', btn.dataset.value === state.toLevel);
         });
-        // 语言
         document.querySelectorAll('[data-group="lang"] .lang-btn').forEach(btn => {
             btn.classList.toggle('active', btn.dataset.value === state.currentLang);
         });
     }
 
-    // 刷新UI (修复语言切换后所有文本)
     function refreshUI() {
         const bonus = getExtraPercent() > 0 ? getBonusAmount() : 0;
         const from = state.fromLevel;
@@ -523,54 +566,56 @@
         const data = levelData[to];
         const lang = state.currentLang;
 
-        // 更新标题中的等级 (高亮部分)
+        updateBonusCalcInfo();
+
         fromSpan.innerText = from;
         toSpan.innerText = to;
 
-        // 收入数字
         dailyVal.innerHTML = `RM ${formatMoney(data.daily)}`;
         monthlyVal.innerHTML = `RM ${formatMoney(data.monthly)}`;
         yearlyVal.innerHTML = `RM ${formatMoney(data.yearly)}`;
 
-        // 根据语言更新文本
         if (lang === 'cn') {
             promoTitle.innerHTML = `🎉 恭喜您成功从 <span class="highlight">${from}</span> 晋升至 <span class="highlight">${to}</span> 等级！`;
-            refundLine.innerHTML = bonus > 0 
-                ? `✨ ${from}费用已全额退还，升级奖金*RM${bonus.toFixed(2)}* 也已发放至您的 RS 账户，继续加油！🚀`
-                : `✨ ${from} 费用已全额退还，继续加油！🚀`;
+            if (bonus > 0) {
+                refundLine.innerHTML = `✨ ${from}费用已全额退还，升级奖金*RM${bonus.toFixed(2)}* 已发放至您的 RS 账户，继续加油！🚀`;
+            } else {
+                refundLine.innerHTML = `✨ ${from} 费用已全额退还，继续加油！🚀`;
+            }
             promoBody.innerHTML = `这是您财富增长道路上的重要升级，属于您的稳健增值之旅，现已正式启航！🐄💪<br><br>从 ${from} 到 ${to}，您已解锁更多订单权限，收入机会持续增加，未来还有更多惊喜等着您！🥛`;
             promoPs.innerHTML = `<strong>PS：</strong>只管用心去做、踏实前行，时间自会给你最好的答案`;
         } else if (lang === 'en') {
             promoTitle.innerHTML = `🎉 Congratulations on your successful promotion from <span class="highlight">${from}</span> to <span class="highlight">${to}</span>!`;
-            refundLine.innerHTML = bonus > 0
-                ? `✨ ${from} fee fully refunded, upgrade bonus *RM${bonus.toFixed(2)}* has been credited to your RS account. Keep it up! 🚀`
-                : `✨ ${from} fee fully refunded. Keep it up! 🚀`;
+            if (bonus > 0) {
+                refundLine.innerHTML = `✨ ${from} fee fully refunded, upgrade bonus *RM${bonus.toFixed(2)}* has been credited to your RS account. Keep it up! 🚀`;
+            } else {
+                refundLine.innerHTML = `✨ ${from} fee fully refunded. Keep it up! 🚀`;
+            }
             promoBody.innerHTML = `This is a significant upgrade on your wealth growth path. Your journey of steady value appreciation has now officially begun! 🐄💪<br><br>From ${from} to ${to}, you have unlocked more order privileges and income opportunities. More surprises await you in the future! 🥛`;
             promoPs.innerHTML = `<strong>PS:</strong> Just do it with heart and move forward steadily; time will give you the best answer.`;
         } else { // my
             promoTitle.innerHTML = `🎉 Tahniah atas kenaikan pangkat anda dari <span class="highlight">${from}</span> ke <span class="highlight">${to}</span>!`;
-            refundLine.innerHTML = bonus > 0
-                ? `✨ Yuran ${from} dikembalikan sepenuhnya, bonus naik taraf *RM${bonus.toFixed(2)}* telah dikreditkan ke akaun RS anda. Teruskan! 🚀`
-                : `✨ Yuran ${from} dikembalikan sepenuhnya. Teruskan! 🚀`;
+            if (bonus > 0) {
+                refundLine.innerHTML = `✨ Yuran ${from} dikembalikan sepenuhnya, bonus naik taraf *RM${bonus.toFixed(2)}* telah dikreditkan ke akaun RS anda. Teruskan! 🚀`;
+            } else {
+                refundLine.innerHTML = `✨ Yuran ${from} dikembalikan sepenuhnya. Teruskan! 🚀`;
+            }
             promoBody.innerHTML = `Ini adalah peningkatan penting dalam laluan pertumbuhan kekayaan anda. Perjalanan peningkatan nilai stabil anda kini secara rasmi bermula! 🐄💪<br><br>Dari ${from} ke ${to}, anda telah membuka lebih banyak keistimewaan pesanan dan peluang pendapatan. Lebih banyak kejutan menanti anda pada masa hadapan! 🥛`;
             promoPs.innerHTML = `<strong>PS:</strong> Lakukan dengan hati dan maju dengan mantap; masa akan memberikan jawapan terbaik.`;
         }
     }
 
-    // 事件代理 (修复复制按钮的class移除)
     container.addEventListener('click', (e) => {
         const target = e.target;
 
-        // 等级按钮 / 语言按钮
         if (target.classList.contains('level-btn') || target.classList.contains('lang-btn')) {
             const group = target.closest('[data-group]')?.dataset.group;
             const value = target.dataset.value;
             if (!group || !value) return;
 
             if (group === 'fromLevel') {
-                const fromNum = parseInt(value.replace('R',''));
-                const toNum = parseInt(state.toLevel.replace('R',''));
-                // 自动修正 to
+                const fromNum = parseInt(value.替换('R',''));
+                const toNum = parseInt(state.toLevel.替换('R',''));
                 if (fromNum >= toNum) {
                     if (fromNum < 9) {
                         state.toLevel = `R${fromNum + 1}`;
@@ -580,8 +625,8 @@
                 }
                 state.fromLevel = value;
             } else if (group === 'toLevel') {
-                const fromNum = parseInt(state.fromLevel.replace('R',''));
-                const toNum = parseInt(value.replace('R',''));
+                const fromNum = parseInt(state.fromLevel.替换('R',''));
+                const toNum = parseInt(value.替换('R',''));
                 if (toNum <= fromNum) {
                     if (fromNum < 9) {
                         state.toLevel = `R${fromNum + 1}`;
@@ -592,7 +637,7 @@
                     state.toLevel = value;
                 }
             } else if (group === 'lang') {
-                state.currentLang = value;   // 核心修复: 更新语言状态
+                state.currentLang = value;
             } else {
                 return;
             }
@@ -602,19 +647,17 @@
             e.preventDefault();
         }
 
-        // 复制按钮
         if (target.classList.contains('copy-btn') || target.closest('.copy-btn')) {
             const btn = target.closest('.copy-btn');
             if (!btn) return;
             const bonus = getExtraPercent() > 0 ? getBonusAmount() : 0;
             const fullText = generateFullSpeech(state.currentLang, state.fromLevel, state.toLevel, bonus);
-            navigator.clipboard.writeText(fullText).then(() => {
+            navigator.clipboard.writeText(fullText).键，然后(() => {
                 const originalText = btn.innerText;
                 btn.innerText = '✅ 已复制！';
                 btn.classList.add('copy-success');
                 setTimeout(() => {
                     btn.innerText = originalText;
-                    // 修复：使用 classList.remove 而非 classList.移除
                     btn.classList.移除('copy-success');
                 }, 1500);
             }).catch(() => alert('复制失败，请手动复制'));
@@ -622,10 +665,8 @@
         }
     });
 
-    // 百分比输入监听
     extraInput.addEventListener('input', refreshUI);
 
-    // 初始化
     syncActiveClasses();
     renderLevelGrid();
     refreshUI();
