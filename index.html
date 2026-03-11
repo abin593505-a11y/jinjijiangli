@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>等级点击·额外奖励｜晋升话术三语 (修复版)</title>
+    <title>等级点击·额外奖励｜晋升话术三语 (差价百分比)</title>
     <style>
         * {
             margin: 0;
@@ -322,8 +322,8 @@
 </head>
 <body>
 <div class="glass-card" id="appContainer">
-    <h1>✨ 等级点击·额外奖励 <span>晋升话术</span></h1>
-    <div class="sub">点击等级按钮，填写额外奖励%，话术自动更新 (奖励按目标等级金额计算)</div>
+    <h1>✨ 等级点击·额外奖励 <span>差价百分比</span></h1>
+    <div class="sub">点击等级，奖励 = (目标等级价格 − 原等级价格) × 百分比 (隐藏后缀)</div>
 
     <!-- 等级点击区域 -->
     <div class="level-click-row">
@@ -360,12 +360,12 @@
         </div>
     </div>
 
-    <!-- 额外奖励 + 复制按钮整合行 -->
+    <!-- 额外奖励 + 复制按钮整合行 (差价百分比逻辑) -->
     <div class="extra-copy-row">
         <div class="extra-percent">
             <span class="extra-label">🎁 额外奖励 %</span>
             <input type="number" id="extraPercent" class="percent-input" value="5" min="0" max="100" step="0.1">
-            <span id="bonusCalcInfo" class="bonus-calc-info">基于目标等级金额计算</span>
+            <span id="bonusCalcInfo" class="bonus-calc-info">基于差价计算 (目标−原等级)</span>
         </div>
         <button class="copy-btn" data-copy="promo">📋 复制晋升话术</button>
     </div>
@@ -420,6 +420,7 @@
         currentLang: 'cn'
     };
 
+    // 从图片导入的价格表 (R1~R9)
     const levelData = {
         'R1': { price: 150, daily: 5, monthly: 150, yearly: 1825 },
         'R2': { price: 450, daily: 15, monthly: 450, yearly: 5475 },
@@ -464,27 +465,32 @@
         return parseFloat(extraInput.value) || 0;
     }
 
-    // 核心逻辑：奖励始终基于目标等级（To Level）的金额计算
+    // 核心逻辑：奖励 = (目标等级价格 - 原等级价格) * 百分比
     function getBonusAmount() {
         const percent = getExtraPercent();
         if (percent <= 0) return 0;
 
-        // 始终基于目标等级的金额计算
+        const fromPrice = levelData[state.fromLevel].price;
         const toPrice = levelData[state.toLevel].price;
-        return (percent / 100) * toPrice;
+        const diff = toPrice - fromPrice;
+        if (diff <= 0) return 0;   // 如果from ≥ to，差价为0，无奖励 (但界面会限制)
+        return (percent / 100) * diff;
     }
 
     function updateBonusCalcInfo() {
+        const fromP = levelData[state.fromLevel].price;
+        const toP = levelData[state.toLevel].price;
+        const diff = toP - fromP;
         if (state.currentLang === 'cn') {
-            bonusCalcInfo.textContent = `基于 ${state.toLevel} 金额计算`;
+            bonusCalcInfo.textContent = `差价 RM ${diff.toFixed(2)} × ${getExtraPercent()}%`;
         } else if (state.currentLang === 'en') {
-            bonusCalcInfo.textContent = `Based on ${state.toLevel} amount`;
+            bonusCalcInfo.textContent = `Diff RM ${diff.toFixed(2)} × ${getExtraPercent()}%`;
         } else {
-            bonusCalcInfo.textContent = `Berdasarkan amaun ${state.toLevel}`;
+            bonusCalcInfo.textContent = `Beza RM ${diff.toFixed(2)} × ${getExtraPercent()}%`;
         }
     }
 
-    // 生成完整话术 - 简化版本
+    // 生成完整话术 (隐藏所有 "(差价奖励)" / "(price difference reward)" / "(ganjaran perbezaan harga)" 后缀)
     function generateFullSpeech(lang, from, to, bonus) {
         const data = levelData[to];
         const daily = formatMoney(data.daily);
@@ -498,7 +504,7 @@
         if (lang === 'cn') {
             title = `🎉 恭喜您成功从 ${from} 晋升至 ${to} 等级！`;
             refundText = hasBonus 
-                ? `${from}费用已全额退还，升级奖金*RM${bonusText}* 已发放至您的 RS 账户，继续加油！🚀`
+                ? `${from}费用已全额退还，升级奖金*RM${bonusText}* 已发放至您的 RS 账户，继续加油！🚀`   // 移除 (差价奖励)
                 : `${from} 费用已全额退还，继续加油！🚀`;
             incomeBlock = `📈 收入稳健增长
 每日收入预估：*RM ${daily}*
@@ -511,7 +517,7 @@
         } else if (lang === 'en') {
             title = `🎉 Congratulations on your successful promotion from ${from} to ${to}!`;
             refundText = hasBonus 
-                ? `${from} fee fully refunded, upgrade bonus *RM${bonusText}* has been credited to your RS account. Keep it up! 🚀`
+                ? `${from} fee fully refunded, upgrade bonus *RM${bonusText}* has been credited to your RS account. Keep it up! 🚀`   // 移除 (price difference reward)
                 : `${from} fee fully refunded. Keep it up! 🚀`;
             incomeBlock = `📈 Steady Income Growth
 Estimated daily income: *RM ${daily}*
@@ -524,7 +530,7 @@ From ${from} to ${to}, you have unlocked more order privileges and income opport
         } else { // my
             title = `🎉 Tahniah atas kenaikan pangkat anda dari ${from} ke ${to}!`;
             refundText = hasBonus 
-                ? `Yuran ${from} dikembalikan sepenuhnya, bonus naik taraf *RM${bonusText}* telah dikreditkan ke akaun RS anda. Teruskan! 🚀`
+                ? `Yuran ${from} dikembalikan sepenuhnya, bonus naik taraf *RM${bonusText}* telah dikreditkan ke akaun RS anda. Teruskan! 🚀`   // 移除 (ganjaran perbezaan harga)
                 : `Yuran ${from} dikembalikan sepenuhnya. Teruskan! 🚀`;
             incomeBlock = `📈 Pertumbuhan Pendapatan Stabil
 Anggaran pendapatan harian: *RM ${daily}*
@@ -575,6 +581,7 @@ ${psText}`;
         monthlyVal.innerHTML = `RM ${formatMoney(data.monthly)}`;
         yearlyVal.innerHTML = `RM ${formatMoney(data.yearly)}`;
 
+        // 根据语言填充文案（奖金行已移除后缀）
         if (lang === 'cn') {
             promoTitle.innerHTML = `🎉 恭喜您成功从 <span class="highlight">${from}</span> 晋升至 <span class="highlight">${to}</span> 等级！`;
             if (bonus > 0) {
@@ -617,6 +624,7 @@ ${psText}`;
                 const fromNum = parseInt(value.replace('R',''));
                 const toNum = parseInt(state.toLevel.replace('R',''));
                 if (fromNum >= toNum) {
+                    // 如果选择的from ≥ to, 自动将to调整为from+1 (不超过R9)
                     if (fromNum < 9) {
                         state.toLevel = `R${fromNum + 1}`;
                     } else {
@@ -628,6 +636,7 @@ ${psText}`;
                 const fromNum = parseInt(state.fromLevel.replace('R',''));
                 const toNum = parseInt(value.replace('R',''));
                 if (toNum <= fromNum) {
+                    // 如果选择的to ≤ from，不允许，自动设置为from+1 (不超过R9)
                     if (fromNum < 9) {
                         state.toLevel = `R${fromNum + 1}`;
                     } else {
