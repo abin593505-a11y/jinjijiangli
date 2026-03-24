@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>等级点击·额外奖励｜晋升话术三语 (差价百分比)</title>
+    <title>等级点击·双重奖励｜晋升话术三语 (差价+活动奖励)</title>
     <style>
         * {
             margin: 0;
@@ -20,7 +20,7 @@
             padding: 2rem 1rem;
         }
         .glass-card {
-            max-width: 1200px;
+            max-width: 1250px;
             width: 100%;
             background: rgba(255, 255, 255, 0.92);
             backdrop-filter: blur(12px);
@@ -37,6 +37,7 @@
             align-items: center;
             gap: 15px;
             margin-bottom: 0.5rem;
+            flex-wrap: wrap;
         }
         h1 span {
             background: #fbebc0;
@@ -118,8 +119,8 @@
             font-weight: 300;
         }
 
-        /* 额外奖励 + 复制整合行 */
-        .extra-copy-row {
+        /* 额外奖励 + 活动奖励整合行 (双奖励区域) */
+        .double-reward-row {
             display: flex;
             flex-wrap: wrap;
             align-items: center;
@@ -131,39 +132,48 @@
             margin-bottom: 2rem;
             border: 2px solid #b1dbc2;
         }
-        .extra-percent {
+        .rewards-group {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 25px;
+            background: rgba(255,255,240,0.6);
+            padding: 0.5rem 1.2rem;
+            border-radius: 70px;
+        }
+        .reward-item {
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 12px;
             flex-wrap: wrap;
+            background: white;
+            padding: 0.4rem 1.2rem;
+            border-radius: 60px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
         }
-        .extra-label {
+        .reward-label {
             font-weight: 700;
             color: #1a573b;
-            font-size: 1.1rem;
-            background: white;
-            padding: 0.5rem 1.5rem;
+            font-size: 1rem;
+            background: #f5f7e9;
+            padding: 0.3rem 1rem;
             border-radius: 60px;
         }
-        .percent-input {
-            width: 120px;
-            padding: 12px 20px;
+        .reward-input {
+            width: 100px;
+            padding: 10px 16px;
             border: 2px solid #9dceb4;
             border-radius: 60px;
             font-weight: 600;
             color: #1d4b33;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             text-align: center;
         }
-        .percent-input:focus {
-            outline: none;
-            border-color: #1e7e5a;
-        }
         .bonus-calc-info {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: #527a64;
             background: #f0fbf5;
-            padding: 0.5rem 1rem;
+            padding: 0.3rem 1rem;
             border-radius: 40px;
             border: 1px solid #c7e2d3;
         }
@@ -317,13 +327,19 @@
             font-weight: 800;
             color: #1e6242;
         }
+        .refund-line {
+            font-size:1.3rem; 
+            margin-bottom:0.5rem; 
+            color:#1b543e; 
+            font-weight:500;
+        }
     </style>
 <base target="_blank">
 </head>
 <body>
 <div class="glass-card" id="appContainer">
-    <h1>✨ 等级点击·额外奖励 <span>差价百分比</span></h1>
-    <div class="sub">点击等级，奖励 = (目标等级价格 − 原等级价格) × 百分比 (隐藏后缀)</div>
+    <h1>✨ 等级点击·双重奖励 <span>差价+活动奖励</span></h1>
+    <div class="sub">点击等级，奖励1(差价百分比) + 奖励2(活动百分比) | 话术自动合并展示</div>
 
     <!-- 等级点击区域 -->
     <div class="level-click-row">
@@ -360,12 +376,21 @@
         </div>
     </div>
 
-    <!-- 额外奖励 + 复制按钮整合行 (差价百分比逻辑) -->
-    <div class="extra-copy-row">
-        <div class="extra-percent">
-            <span class="extra-label">🎁 额外奖励 %</span>
-            <input type="number" id="extraPercent" class="percent-input" value="5" min="0" max="100" step="0.1">
-            <span id="bonusCalcInfo" class="bonus-calc-info">基于差价计算 (目标−原等级)</span>
+    <!-- 双重奖励整合行: 额外奖励(差价百分比) + 活动奖励(独立百分比) 且放在额外奖励前面 -->
+    <div class="double-reward-row">
+        <div class="rewards-group">
+            <!-- 活动奖励 (放在额外奖励前面) -->
+            <div class="reward-item">
+                <span class="reward-label">🎉 活动奖励 %</span>
+                <input type="number" id="activityPercent" class="reward-input" value="3" min="0" max="100" step="0.1">
+                <span id="activityBonusInfo" class="bonus-calc-info">基于差价计算</span>
+            </div>
+            <!-- 额外奖励 (差价百分比) -->
+            <div class="reward-item">
+                <span class="reward-label">🎁 额外奖励 %</span>
+                <input type="number" id="extraPercent" class="reward-input" value="5" min="0" max="100" step="0.1">
+                <span id="extraBonusInfo" class="bonus-calc-info">基于差价计算</span>
+            </div>
         </div>
         <button class="copy-btn" data-copy="promo">📋 复制晋升话术</button>
     </div>
@@ -382,7 +407,7 @@
     <!-- 晋升卡片 -->
     <div class="promo-card" id="promoCard">
         <div class="promo-title" id="promoTitle">🎉 恭喜您成功从 <span class="highlight" id="fromSpan">R1</span> 晋升至 <span class="highlight" id="toSpan">R2</span> 等级！</div>
-        <div id="refundLine" class="refund-line" style="font-size:1.3rem; margin-bottom:0.5rem; color:#1b543e; font-weight:500;">✨ R1费用已全额退还，升级奖金*RM22.50* 已发放至您的 RS 账户，继续加油！🚀</div>
+        <div id="refundLine" class="refund-line">✨ R1费用已全额退还，升级奖金*RM22.50* 已发放至您的 RS 账户，继续加油！🚀</div>
 
         <div class="income-banner">
             <div class="income-item"><span class="income-label">每日收入</span><div class="income-value" id="dailyVal">RM 15.00</div></div>
@@ -420,7 +445,7 @@
         currentLang: 'cn'
     };
 
-    // 从图片导入的价格表 (R1~R9)
+    // 价格表数据 (R1~R9)
     const levelData = {
         'R1': { price: 150, daily: 5, monthly: 150, yearly: 1825 },
         'R2': { price: 450, daily: 15, monthly: 450, yearly: 5475 },
@@ -442,8 +467,11 @@
     const promoBody = document.getElementById('promoBody');
     const promoPs = document.getElementById('promoPs');
     const promoTitle = document.getElementById('promoTitle');
+    
     const extraInput = document.getElementById('extraPercent');
-    const bonusCalcInfo = document.getElementById('bonusCalcInfo');
+    const activityInput = document.getElementById('activityPercent');
+    const extraBonusInfo = document.getElementById('extraBonusInfo');
+    const activityBonusInfo = document.getElementById('activityBonusInfo');
 
     function renderLevelGrid() {
         const grid = document.getElementById('levelGrid');
@@ -461,96 +489,127 @@
         return value.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
     }
 
-    function getExtraPercent() {
-        return parseFloat(extraInput.value) || 0;
-    }
-
-    // 核心逻辑：奖励 = (目标等级价格 - 原等级价格) * 百分比
-    function getBonusAmount() {
-        const percent = getExtraPercent();
-        if (percent <= 0) return 0;
-
+    // 获取差价差值
+    function getPriceDiff() {
         const fromPrice = levelData[state.fromLevel].price;
         const toPrice = levelData[state.toLevel].price;
         const diff = toPrice - fromPrice;
-        if (diff <= 0) return 0;   // 如果from ≥ to，差价为0，无奖励 (但界面会限制)
+        return diff > 0 ? diff : 0;
+    }
+
+    // 额外奖励金额 (差价百分比)
+    function getExtraBonus() {
+        const percent = parseFloat(extraInput.value) || 0;
+        const diff = getPriceDiff();
+        if (percent <= 0 || diff <= 0) return 0;
         return (percent / 100) * diff;
     }
 
-    function updateBonusCalcInfo() {
-        const fromP = levelData[state.fromLevel].price;
-        const toP = levelData[state.toLevel].price;
-        const diff = toP - fromP;
+    // 活动奖励金额 (差价百分比)
+    function getActivityBonus() {
+        const percent = parseFloat(activityInput.value) || 0;
+        const diff = getPriceDiff();
+        if (percent <= 0 || diff <= 0) return 0;
+        return (percent / 100) * diff;
+    }
+
+    // 总奖励金额 (额外+活动)
+    function getTotalBonus() {
+        return getExtraBonus() + getActivityBonus();
+    }
+
+    function updateBonusCalcInfos() {
+        const diff = getPriceDiff();
+        const extraPercent = parseFloat(extraInput.value) || 0;
+        const activityPercent = parseFloat(activityInput.value) || 0;
         if (state.currentLang === 'cn') {
-            bonusCalcInfo.textContent = `差价 RM ${diff.toFixed(2)} × ${getExtraPercent()}%`;
+            extraBonusInfo.textContent = `差价 RM ${diff.toFixed(2)} × ${extraPercent}%`;
+            activityBonusInfo.textContent = `差价 RM ${diff.toFixed(2)} × ${activityPercent}%`;
         } else if (state.currentLang === 'en') {
-            bonusCalcInfo.textContent = `Diff RM ${diff.toFixed(2)} × ${getExtraPercent()}%`;
+            extraBonusInfo.textContent = `Diff RM ${diff.toFixed(2)} × ${extraPercent}%`;
+            activityBonusInfo.textContent = `Diff RM ${diff.toFixed(2)} × ${activityPercent}%`;
         } else {
-            bonusCalcInfo.textContent = `Beza RM ${diff.toFixed(2)} × ${getExtraPercent()}%`;
+            extraBonusInfo.textContent = `Beza RM ${diff.toFixed(2)} × ${extraPercent}%`;
+            activityBonusInfo.textContent = `Beza RM ${diff.toFixed(2)} × ${activityPercent}%`;
         }
     }
 
-    // 生成完整话术 (隐藏所有 "(差价奖励)" / "(price difference reward)" / "(ganjaran perbezaan harga)" 后缀)
-    function generateFullSpeech(lang, from, to, bonus) {
+    // 核心生成话术：活动奖励放在额外奖励前面展示
+    function generateFullSpeech(lang, from, to, activityBonus, extraBonus, totalBonus) {
         const data = levelData[to];
         const daily = formatMoney(data.daily);
         const monthly = formatMoney(data.monthly);
         const yearly = formatMoney(data.yearly);
-        const hasBonus = bonus > 0;
-        const bonusText = bonus.toFixed(2);
+        const hasTotal = totalBonus > 0;
+        const activityBonusText = activityBonus.toFixed(2);
+        const extraBonusText = extraBonus.toFixed(2);
+        const totalBonusText = totalBonus.toFixed(2);
 
-        let title = '', refundText = '', bodyMain = '', psText = '', incomeBlock = '';
+        // 构建奖励行文本: 活动奖励在前，额外奖励在后 (根据语言)
+        let rewardLine = '';
+        if (lang === 'cn') {
+            if (hasTotal) {
+                if (activityBonus > 0 && extraBonus > 0) {
+                    rewardLine = `✨ ${from}费用已全额退还，活动奖金*RM${activityBonusText}* + 额外奖金*RM${extraBonusText}* 合计*RM${totalBonusText}* 已发放至您的 RS 账户，继续加油！🚀`;
+                } else if (activityBonus > 0) {
+                    rewardLine = `✨ ${from}费用已全额退还，活动奖金*RM${activityBonusText}* 已发放至您的 RS 账户，继续加油！🚀`;
+                } else if (extraBonus > 0) {
+                    rewardLine = `✨ ${from}费用已全额退还，额外奖金*RM${extraBonusText}* 已发放至您的 RS 账户，继续加油！🚀`;
+                } else {
+                    rewardLine = `✨ ${from}费用已全额退还，继续加油！🚀`;
+                }
+            } else {
+                rewardLine = `✨ ${from}费用已全额退还，继续加油！🚀`;
+            }
+        } else if (lang === 'en') {
+            if (hasTotal) {
+                if (activityBonus > 0 && extraBonus > 0) {
+                    rewardLine = `✨ ${from} fee fully refunded, activity bonus *RM${activityBonusText}* + extra bonus *RM${extraBonusText}* total *RM${totalBonusText}* credited to your RS account. Keep it up! 🚀`;
+                } else if (activityBonus > 0) {
+                    rewardLine = `✨ ${from} fee fully refunded, activity bonus *RM${activityBonusText}* credited to your RS account. Keep it up! 🚀`;
+                } else if (extraBonus > 0) {
+                    rewardLine = `✨ ${from} fee fully refunded, extra bonus *RM${extraBonusText}* credited to your RS account. Keep it up! 🚀`;
+                } else {
+                    rewardLine = `✨ ${from} fee fully refunded. Keep it up! 🚀`;
+                }
+            } else {
+                rewardLine = `✨ ${from} fee fully refunded. Keep it up! 🚀`;
+            }
+        } else { // BM
+            if (hasTotal) {
+                if (activityBonus > 0 && extraBonus > 0) {
+                    rewardLine = `✨ Yuran ${from} dikembalikan sepenuhnya, bonus aktiviti *RM${activityBonusText}* + bonus tambahan *RM${extraBonusText}* jumlah *RM${totalBonusText}* dikreditkan ke akaun RS anda. Teruskan! 🚀`;
+                } else if (activityBonus > 0) {
+                    rewardLine = `✨ Yuran ${from} dikembalikan sepenuhnya, bonus aktiviti *RM${activityBonusText}* dikreditkan ke akaun RS anda. Teruskan! 🚀`;
+                } else if (extraBonus > 0) {
+                    rewardLine = `✨ Yuran ${from} dikembalikan sepenuhnya, bonus tambahan *RM${extraBonusText}* dikreditkan ke akaun RS anda. Teruskan! 🚀`;
+                } else {
+                    rewardLine = `✨ Yuran ${from} dikembalikan sepenuhnya. Teruskan! 🚀`;
+                }
+            } else {
+                rewardLine = `✨ Yuran ${from} dikembalikan sepenuhnya. Teruskan! 🚀`;
+            }
+        }
 
+        let title = '', incomeBlock = '', bodyMain = '', psText = '';
         if (lang === 'cn') {
             title = `🎉 恭喜您成功从 ${from} 晋升至 ${to} 等级！`;
-            refundText = hasBonus 
-                ? `${from}费用已全额退还，升级奖金*RM${bonusText}* 已发放至您的 RS 账户，继续加油！🚀`   // 移除 (差价奖励)
-                : `${from} 费用已全额退还，继续加油！🚀`;
-            incomeBlock = `📈 收入稳健增长
-每日收入预估：*RM ${daily}*
-30 天累计收入：*RM ${monthly}*
-365 天累计收入：*RM ${yearly}*`;
-            bodyMain = `这是您财富增长道路上的重要升级，属于您的稳健增值之旅，现已正式启航！🐄💪
-
-从 ${from} 到 ${to}，您已解锁更多订单权限，收入机会持续增加，未来还有更多惊喜等着您！🥛`;
+            incomeBlock = `📈 收入稳健增长\n每日收入预估：*RM ${daily}*\n30 天累计收入：*RM ${monthly}*\n365 天累计收入：*RM ${yearly}*`;
+            bodyMain = `这是您财富增长道路上的重要升级，属于您的稳健增值之旅，现已正式启航！🐄💪\n\n从 ${from} 到 ${to}，您已解锁更多订单权限，收入机会持续增加，未来还有更多惊喜等着您！🥛`;
             psText = `PS：只管用心去做、踏实前行，时间自会给你最好的答案`;
         } else if (lang === 'en') {
             title = `🎉 Congratulations on your successful promotion from ${from} to ${to}!`;
-            refundText = hasBonus 
-                ? `${from} fee fully refunded, upgrade bonus *RM${bonusText}* has been credited to your RS account. Keep it up! 🚀`   // 移除 (price difference reward)
-                : `${from} fee fully refunded. Keep it up! 🚀`;
-            incomeBlock = `📈 Steady Income Growth
-Estimated daily income: *RM ${daily}*
-30-day cumulative: *RM ${monthly}*
-365-day cumulative: *RM ${yearly}*`;
-            bodyMain = `This is a significant upgrade on your wealth growth path. Your journey of steady value appreciation has now officially begun! 🐄💪
-
-From ${from} to ${to}, you have unlocked more order privileges and income opportunities. More surprises await you in the future! 🥛`;
+            incomeBlock = `📈 Steady Income Growth\nEstimated daily income: *RM ${daily}*\n30-day cumulative: *RM ${monthly}*\n365-day cumulative: *RM ${yearly}*`;
+            bodyMain = `This is a significant upgrade on your wealth growth path. Your journey of steady value appreciation has now officially begun! 🐄💪\n\nFrom ${from} to ${to}, you have unlocked more order privileges and income opportunities. More surprises await you in the future! 🥛`;
             psText = `PS: Just do it with heart and move forward steadily; time will give you the best answer.`;
-        } else { // my
+        } else {
             title = `🎉 Tahniah atas kenaikan pangkat anda dari ${from} ke ${to}!`;
-            refundText = hasBonus 
-                ? `Yuran ${from} dikembalikan sepenuhnya, bonus naik taraf *RM${bonusText}* telah dikreditkan ke akaun RS anda. Teruskan! 🚀`   // 移除 (ganjaran perbezaan harga)
-                : `Yuran ${from} dikembalikan sepenuhnya. Teruskan! 🚀`;
-            incomeBlock = `📈 Pertumbuhan Pendapatan Stabil
-Anggaran pendapatan harian: *RM ${daily}*
-Kumulatif 30 hari: *RM ${monthly}*
-Kumulatif 365 hari: *RM ${yearly}*`;
-            bodyMain = `Ini adalah peningkatan penting dalam laluan pertumbuhan kekayaan anda. Perjalanan peningkatan nilai stabil anda kini secara rasmi bermula! 🐄💪
-
-Dari ${from} ke ${to}, anda telah membuka lebih banyak keistimewaan pesanan dan peluang pendapatan. Lebih banyak kejutan menanti anda pada masa hadapan! 🥛`;
+            incomeBlock = `📈 Pertumbuhan Pendapatan Stabil\nAnggaran pendapatan harian: *RM ${daily}*\nKumulatif 30 hari: *RM ${monthly}*\nKumulatif 365 hari: *RM ${yearly}*`;
+            bodyMain = `Ini adalah peningkatan penting dalam laluan pertumbuhan kekayaan anda. Perjalanan peningkatan nilai stabil anda kini secara rasmi bermula! 🐄💪\n\nDari ${from} ke ${to}, anda telah membuka lebih banyak keistimewaan pesanan dan peluang pendapatan. Lebih banyak kejutan menanti anda pada masa hadapan! 🥛`;
             psText = `PS: Lakukan dengan hati dan maju dengan mantap; masa akan memberikan jawapan terbaik.`;
         }
 
-        return `${title}
-
-${refundText}
-
-${incomeBlock}
-
-${bodyMain}
-
-${psText}`;
+        return `${title}\n\n${rewardLine}\n\n${incomeBlock}\n\n${bodyMain}\n\n${psText}`;
     }
 
     function syncActiveClasses() {
@@ -566,26 +625,33 @@ ${psText}`;
     }
 
     function refreshUI() {
-        const bonus = getExtraPercent() > 0 ? getBonusAmount() : 0;
         const from = state.fromLevel;
         const to = state.toLevel;
         const data = levelData[to];
         const lang = state.currentLang;
-
-        updateBonusCalcInfo();
+        const activityBonus = getActivityBonus();
+        const extraBonus = getExtraBonus();
+        const totalBonus = activityBonus + extraBonus;
+        
+        updateBonusCalcInfos();
 
         fromSpan.innerText = from;
         toSpan.innerText = to;
-
         dailyVal.innerHTML = `RM ${formatMoney(data.daily)}`;
         monthlyVal.innerHTML = `RM ${formatMoney(data.monthly)}`;
         yearlyVal.innerHTML = `RM ${formatMoney(data.yearly)}`;
 
-        // 根据语言填充文案（奖金行已移除后缀）
+        // 根据语言更新卡片内展示（与话术内容保持一致，活动奖励在前）
         if (lang === 'cn') {
             promoTitle.innerHTML = `🎉 恭喜您成功从 <span class="highlight">${from}</span> 晋升至 <span class="highlight">${to}</span> 等级！`;
-            if (bonus > 0) {
-                refundLine.innerHTML = `✨ ${from}费用已全额退还，升级奖金*RM${bonus.toFixed(2)}* 已发放至您的 RS 账户，继续加油！🚀`;
+            if (totalBonus > 0) {
+                if (activityBonus > 0 && extraBonus > 0) {
+                    refundLine.innerHTML = `✨ ${from}费用已全额退还，活动奖金*RM${activityBonus.toFixed(2)}* + 额外奖金*RM${extraBonus.toFixed(2)}* 合计*RM${totalBonus.toFixed(2)}* 已发放至您的 RS 账户，继续加油！🚀`;
+                } else if (activityBonus > 0) {
+                    refundLine.innerHTML = `✨ ${from}费用已全额退还，活动奖金*RM${activityBonus.toFixed(2)}* 已发放至您的 RS 账户，继续加油！🚀`;
+                } else {
+                    refundLine.innerHTML = `✨ ${from}费用已全额退还，额外奖金*RM${extraBonus.toFixed(2)}* 已发放至您的 RS 账户，继续加油！🚀`;
+                }
             } else {
                 refundLine.innerHTML = `✨ ${from} 费用已全额退还，继续加油！🚀`;
             }
@@ -593,17 +659,29 @@ ${psText}`;
             promoPs.innerHTML = `<strong>PS：</strong>只管用心去做、踏实前行，时间自会给你最好的答案`;
         } else if (lang === 'en') {
             promoTitle.innerHTML = `🎉 Congratulations on your successful promotion from <span class="highlight">${from}</span> to <span class="highlight">${to}</span>!`;
-            if (bonus > 0) {
-                refundLine.innerHTML = `✨ ${from} fee fully refunded, upgrade bonus *RM${bonus.toFixed(2)}* has been credited to your RS account. Keep it up! 🚀`;
+            if (totalBonus > 0) {
+                if (activityBonus > 0 && extraBonus > 0) {
+                    refundLine.innerHTML = `✨ ${from} fee fully refunded, activity bonus *RM${activityBonus.toFixed(2)}* + extra bonus *RM${extraBonus.toFixed(2)}* total *RM${totalBonus.toFixed(2)}* credited to your RS account. Keep it up! 🚀`;
+                } else if (activityBonus > 0) {
+                    refundLine.innerHTML = `✨ ${from} fee fully refunded, activity bonus *RM${activityBonus.toFixed(2)}* credited to your RS account. Keep it up! 🚀`;
+                } else {
+                    refundLine.innerHTML = `✨ ${from} fee fully refunded, extra bonus *RM${extraBonus.toFixed(2)}* credited to your RS account. Keep it up! 🚀`;
+                }
             } else {
                 refundLine.innerHTML = `✨ ${from} fee fully refunded. Keep it up! 🚀`;
             }
             promoBody.innerHTML = `This is a significant upgrade on your wealth growth path. Your journey of steady value appreciation has now officially begun! 🐄💪<br><br>From ${from} to ${to}, you have unlocked more order privileges and income opportunities. More surprises await you in the future! 🥛`;
             promoPs.innerHTML = `<strong>PS:</strong> Just do it with heart and move forward steadily; time will give you the best answer.`;
-        } else { // my
+        } else {
             promoTitle.innerHTML = `🎉 Tahniah atas kenaikan pangkat anda dari <span class="highlight">${from}</span> ke <span class="highlight">${to}</span>!`;
-            if (bonus > 0) {
-                refundLine.innerHTML = `✨ Yuran ${from} dikembalikan sepenuhnya, bonus naik taraf *RM${bonus.toFixed(2)}* telah dikreditkan ke akaun RS anda. Teruskan! 🚀`;
+            if (totalBonus > 0) {
+                if (activityBonus > 0 && extraBonus > 0) {
+                    refundLine.innerHTML = `✨ Yuran ${from} dikembalikan sepenuhnya, bonus aktiviti *RM${activityBonus.toFixed(2)}* + bonus tambahan *RM${extraBonus.toFixed(2)}* jumlah *RM${totalBonus.toFixed(2)}* dikreditkan ke akaun RS anda. Teruskan! 🚀`;
+                } else if (activityBonus > 0) {
+                    refundLine.innerHTML = `✨ Yuran ${from} dikembalikan sepenuhnya, bonus aktiviti *RM${activityBonus.toFixed(2)}* dikreditkan ke akaun RS anda. Teruskan! 🚀`;
+                } else {
+                    refundLine.innerHTML = `✨ Yuran ${from} dikembalikan sepenuhnya, bonus tambahan *RM${extraBonus.toFixed(2)}* dikreditkan ke akaun RS anda. Teruskan! 🚀`;
+                }
             } else {
                 refundLine.innerHTML = `✨ Yuran ${from} dikembalikan sepenuhnya. Teruskan! 🚀`;
             }
@@ -624,7 +702,6 @@ ${psText}`;
                 const fromNum = parseInt(value.replace('R',''));
                 const toNum = parseInt(state.toLevel.replace('R',''));
                 if (fromNum >= toNum) {
-                    // 如果选择的from ≥ to, 自动将to调整为from+1 (不超过R9)
                     if (fromNum < 9) {
                         state.toLevel = `R${fromNum + 1}`;
                     } else {
@@ -636,7 +713,6 @@ ${psText}`;
                 const fromNum = parseInt(state.fromLevel.replace('R',''));
                 const toNum = parseInt(value.replace('R',''));
                 if (toNum <= fromNum) {
-                    // 如果选择的to ≤ from，不允许，自动设置为from+1 (不超过R9)
                     if (fromNum < 9) {
                         state.toLevel = `R${fromNum + 1}`;
                     } else {
@@ -650,7 +726,6 @@ ${psText}`;
             } else {
                 return;
             }
-
             syncActiveClasses();
             refreshUI();
             e.preventDefault();
@@ -659,8 +734,7 @@ ${psText}`;
         if (target.classList.contains('copy-btn') || target.closest('.copy-btn')) {
             const btn = target.closest('.copy-btn');
             if (!btn) return;
-            const bonus = getExtraPercent() > 0 ? getBonusAmount() : 0;
-            const fullText = generateFullSpeech(state.currentLang, state.fromLevel, state.toLevel, bonus);
+            const fullText = generateFullSpeech(state.currentLang, state.fromLevel, state.toLevel, getActivityBonus(), getExtraBonus(), getTotalBonus());
             navigator.clipboard.writeText(fullText).then(() => {
                 const originalText = btn.innerText;
                 btn.innerText = '✅ 已复制！';
@@ -675,6 +749,7 @@ ${psText}`;
     });
 
     extraInput.addEventListener('input', refreshUI);
+    activityInput.addEventListener('input', refreshUI);
 
     syncActiveClasses();
     renderLevelGrid();
