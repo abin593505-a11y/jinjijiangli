@@ -1,760 +1,810 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>等级点击·双重奖励｜晋升话术三语 (差价+活动奖励)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>晋升荣耀·智能奖励｜三语话术 (无空行版) 差价+活动奖励+现金代码+幸运抽奖</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            font-family: 'Segoe UI', 'Inter', system-ui, -apple-system, Roboto, sans-serif;
         }
+
         body {
-            background: linear-gradient(145deg, #e9f7ef 0%, #d8ede2 100%);
+            background: linear-gradient(145deg, #eef7ef 0%, #d4e8dc 100%);
             min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             padding: 2rem 1rem;
         }
-        .glass-card {
-            max-width: 1250px;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.92);
-            backdrop-filter: blur(12px);
-            border-radius: 70px;
-            box-shadow: 0 30px 60px rgba(10, 60, 35, 0.3);
-            padding: 2.5rem 2.5rem;
-            border: 2px solid rgba(210, 245, 220, 0.7);
-        }
-        h1 {
-            font-size: 2.4rem;
-            font-weight: 700;
-            color: #164e38;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 0.5rem;
-            flex-wrap: wrap;
-        }
-        h1 span {
-            background: #fbebc0;
-            padding: 0.3rem 1.5rem;
-            border-radius: 60px;
-            font-size: 1.2rem;
-            color: #5d491a;
-        }
-        .sub {
-            font-size: 1.15rem;
-            color: #2e694d;
-            margin-bottom: 2rem;
-            border-left: 6px solid #dbb66c;
-            padding-left: 1.8rem;
-            background: #f0fbf5;
-            border-radius: 0 50px 50px 0;
-            width: fit-content;
-            padding: 0.8rem 2.5rem;
+
+        .prestige-card {
+            max-width: 1350px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.97);
+            backdrop-filter: blur(6px);
+            border-radius: 3.5rem;
+            box-shadow: 0 30px 50px rgba(20, 65, 35, 0.25);
+            padding: 2rem 2rem;
+            border: 2px solid rgba(200, 235, 210, 0.8);
+            transition: all 0.2s;
         }
 
-        /* 等级点击区域 */
-        .level-click-row {
-            background: #def0e7;
-            border-radius: 90px;
-            padding: 1.5rem 2rem;
-            margin-bottom: 2rem;
-            border: 2px solid #b2dec5;
+        h1 {
+            font-size: 2.1rem;
+            font-weight: 800;
+            color: #135a3c;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            gap: 12px;
+            margin-bottom: 0.5rem;
         }
+
+        h1 small {
+            background: #fef0cd;
+            font-size: 0.9rem;
+            font-weight: 600;
+            padding: 0.2rem 1.2rem;
+            border-radius: 60px;
+            color: #b36b1a;
+        }
+
+        .subhead {
+            font-size: 0.95rem;
+            color: #2b7a57;
+            background: #e9f8f0;
+            padding: 0.5rem 1.8rem;
+            border-radius: 50px;
+            display: inline-block;
+            margin-bottom: 1.8rem;
+            border-left: 5px solid #f2c94c;
+        }
+
+        .level-zone {
+            background: #e2f1e8;
+            border-radius: 4rem;
+            padding: 1.4rem 1.6rem;
+            margin-bottom: 1.5rem;
+            border: 2px solid #c4e0d0;
+        }
+
         .level-pair {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 30px;
             flex-wrap: wrap;
-        }
-        .level-block {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 12px;
-        }
-        .level-label {
-            font-weight: 600;
-            color: #1d5c41;
-            font-size: 1.1rem;
-            background: white;
-            padding: 0.3rem 2rem;
-            border-radius: 60px;
-        }
-        .level-buttons {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
             justify-content: center;
-        }
-        .level-btn {
-            background: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 60px;
-            font-weight: 700;
-            font-size: 1.2rem;
-            color: #1d543e;
-            cursor: pointer;
-            box-shadow: 0 6px 12px rgba(0,40,10,0.15);
-            transition: 0.1s;
-            border: 2px solid transparent;
-            min-width: 70px;
-        }
-        .level-btn.active {
-            background: #1e4b3e;
-            color: white;
-            box-shadow: 0 10px 18px -6px #1b6148;
-            border-color: #fbeeb3;
-        }
-        .arrow-icon {
-            font-size: 2.8rem;
-            color: #679f82;
-            font-weight: 300;
+            align-items: center;
+            gap: 1.5rem;
         }
 
-        /* 额外奖励 + 活动奖励整合行 (双奖励区域) */
-        .double-reward-row {
+        .level-group {
+            text-align: center;
+        }
+
+        .level-group span.label {
+            font-weight: 700;
+            background: white;
+            padding: 0.2rem 1.6rem;
+            border-radius: 60px;
+            font-size: 0.85rem;
+            color: #1c6242;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+
+        .level-btns {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .level-btns button {
+            background: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1rem;
+            color: #1f6044;
+            cursor: pointer;
+            transition: 0.08s linear;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+            border: 1px solid #bcdfcc;
+            min-width: 65px;
+        }
+
+        .level-btns button.active {
+            background: #1e4b3a;
+            color: white;
+            border-color: #fbe3a0;
+            box-shadow: 0 8px 15px -6px #1e5b43;
+        }
+
+        .arrow-emoj {
+            font-size: 2.2rem;
+            color: #6d9f83;
+            font-weight: 500;
+        }
+
+        .bonus-panel {
             display: flex;
             flex-wrap: wrap;
             align-items: center;
             justify-content: space-between;
-            gap: 20px;
-            background: #e3f3ea;
-            border-radius: 80px;
-            padding: 1rem 2rem;
-            margin-bottom: 2rem;
-            border: 2px solid #b1dbc2;
+            gap: 18px;
+            background: #fafdf3;
+            border-radius: 70px;
+            padding: 0.6rem 1.8rem;
+            margin-bottom: 1.3rem;
+            border: 2px solid #e1efda;
         }
-        .rewards-group {
+
+        .bonus-inputs {
             display: flex;
             flex-wrap: wrap;
-            align-items: center;
-            gap: 25px;
-            background: rgba(255,255,240,0.6);
-            padding: 0.5rem 1.2rem;
+            gap: 1rem;
+            background: rgba(235, 248, 235, 0.7);
+            padding: 0.4rem 1rem;
             border-radius: 70px;
         }
-        .reward-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            flex-wrap: wrap;
+
+        .bonus-item {
             background: white;
-            padding: 0.4rem 1.2rem;
+            padding: 0.2rem 1rem;
             border-radius: 60px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-        }
-        .reward-label {
-            font-weight: 700;
-            color: #1a573b;
-            font-size: 1rem;
-            background: #f5f7e9;
-            padding: 0.3rem 1rem;
-            border-radius: 60px;
-        }
-        .reward-input {
-            width: 100px;
-            padding: 10px 16px;
-            border: 2px solid #9dceb4;
-            border-radius: 60px;
-            font-weight: 600;
-            color: #1d4b33;
-            font-size: 1.1rem;
-            text-align: center;
-        }
-        .bonus-calc-info {
-            font-size: 0.85rem;
-            color: #527a64;
-            background: #f0fbf5;
-            padding: 0.3rem 1rem;
-            border-radius: 40px;
-            border: 1px solid #c7e2d3;
-        }
-        .copy-btn {
-            background: #1e4b3e;
-            border: none;
-            color: white;
-            padding: 14px 40px;
-            border-radius: 60px;
-            font-weight: 700;
-            font-size: 1.2rem;
             display: flex;
             align-items: center;
-            gap: 12px;
-            cursor: pointer;
-            box-shadow: 0 8px 18px rgba(0,70,30,0.4);
-            border: 2px solid #f8e5a2;
-            white-space: nowrap;
-        }
-        .copy-btn:hover {
-            background: #136545;
-            transform: scale(1.02);
-        }
-        .copy-success {
-            background: #0f7a4f !important;
+            gap: 10px;
+            flex-wrap: wrap;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.02);
         }
 
-        /* 语言切换 */
-        .lang-row {
+        .bonus-item label {
+            font-weight: 700;
+            color: #226e4a;
+            background: #f2fae9;
+            padding: 0.2rem 0.9rem;
+            border-radius: 40px;
+            font-size: 0.9rem;
+        }
+
+        .bonus-item input {
+            width: 90px;
+            padding: 6px 10px;
+            border-radius: 60px;
+            border: 2px solid #cde2d3;
+            font-weight: 600;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .calc-hint {
+            font-size: 0.7rem;
+            background: #fef7e0;
+            padding: 0.2rem 0.8rem;
+            border-radius: 40px;
+            color: #9b741f;
+        }
+
+        .copy-main-btn {
+            background: #1d5a41;
+            border: none;
+            padding: 10px 32px;
+            border-radius: 60px;
+            color: white;
+            font-weight: 800;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: 0.1s;
+            box-shadow: 0 6px 14px rgba(20, 70, 30, 0.25);
+        }
+
+        .copy-main-btn:active {
+            transform: scale(0.97);
+        }
+
+        .feature-flags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            background: #fff8ea;
+            border-radius: 80px;
+            padding: 0.6rem 1.8rem;
+            margin-bottom: 1.3rem;
+            border: 2px solid #ffe1a0;
+        }
+
+        .flag-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: white;
+            padding: 0.3rem 1.3rem;
+            border-radius: 60px;
+            font-weight: 700;
+            color: #b9791a;
+            cursor: pointer;
+            box-shadow: 0 1px 5px rgba(0,0,0,0.05);
+        }
+
+        .flag-item input {
+            width: 19px;
+            height: 19px;
+            accent-color: #ca9622;
+            cursor: pointer;
+        }
+
+        .lang-bar {
             display: flex;
             justify-content: flex-end;
-            margin-bottom: 1.5rem;
-        }
-        .lang-group {
-            display: flex;
-            gap: 8px;
-            background: #e0f0e8;
-            padding: 0.5rem;
-            border-radius: 60px;
-        }
-        .lang-btn {
-            background: white;
-            border: 1px solid #b1d8c0;
-            padding: 10px 28px;
-            border-radius: 40px;
-            font-weight: 600;
-            font-size: 1rem;
-            cursor: pointer;
-            color: #1b543e;
-        }
-        .lang-btn.active {
-            background: #1e4b3e;
-            color: white;
-            border-color: #1e4b3e;
+            margin-bottom: 1rem;
         }
 
-        /* 晋升卡片 */
-        .promo-card {
-            background: white;
+        .lang-group {
+            background: #e3f1e9;
+            padding: 0.25rem;
             border-radius: 60px;
-            padding: 2.5rem 2.8rem;
-            box-shadow: inset 0 2px 10px rgba(255,255,255,0.8), 0 20px 40px -12px #154830;
-            border: 2px solid rgba(170, 220, 180, 0.8);
-            margin: 1.5rem 0 2rem;
+            display: flex;
+            gap: 6px;
         }
-        .promo-title {
-            font-size: 2.2rem;
+
+        .lang-group button {
+            background: white;
+            border: none;
+            padding: 6px 28px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.1s;
+            color: #226e4a;
+            font-size: 0.85rem;
+        }
+
+        .lang-group button.active {
+            background: #226e4a;
+            color: white;
+        }
+
+        .speech-card {
+            background: #ffffff;
+            border-radius: 2.5rem;
+            padding: 1.8rem 2rem;
+            box-shadow: 0 18px 30px -10px rgba(0, 0, 0, 0.08);
+            border: 2px solid #d9f0e2;
+            margin: 1rem 0 1.5rem;
+        }
+
+        .speech-title {
+            font-size: 1.7rem;
             font-weight: 800;
-            line-height: 1.4;
-            color: #10402e;
-            margin-bottom: 1.5rem;
+            line-height: 1.3;
+            color: #0c4732;
+            margin-bottom: 1rem;
         }
-        .promo-title .highlight {
-            background: #fbeec6;
-            padding: 0.2rem 1.2rem;
+
+        .speech-title span.hl {
+            background: #fef1bf;
+            padding: 0 10px;
             border-radius: 60px;
             display: inline-block;
-            margin: 0 6px;
         }
-        .income-banner {
-            background: #e6f5ed;
-            border-radius: 50px;
-            padding: 1.8rem 2rem;
-            margin: 1.5rem 0;
+
+        .refund-badge {
+            background: #f3fcf5;
+            border-radius: 2rem;
+            padding: 0.9rem 1.5rem;
+            margin: 0.8rem 0;
+            border-left: 7px solid #f3bc5c;
+            font-weight: 500;
+            line-height: 1.5;
+        }
+
+        .income-dashboard {
             display: flex;
             flex-wrap: wrap;
-            justify-content: space-around;
-            gap: 20px;
-            border: 2px solid #b3dec6;
-        }
-        .income-item {
-            text-align: center;
-            min-width: 140px;
-        }
-        .income-label {
-            font-size: 1rem;
-            text-transform: uppercase;
-            color: #267353;
-            font-weight: 600;
-        }
-        .income-value {
-            font-size: 2rem;
-            font-weight: 800;
-            color: #05422c;
-        }
-        .message-body {
-            font-size: 1.2rem;
-            line-height: 1.7;
-            color: #194432;
-            background: #f9fffd;
-            padding: 1.8rem 2.2rem;
-            border-radius: 50px;
-            border: 2px dashed #9bcbb2;
-            margin: 1.5rem 0;
-        }
-        .ps {
-            font-style: italic;
-            color: #4b7b63;
-            font-size: 1.1rem;
-            border-top: 2px solid #c2e0d0;
-            padding-top: 1.5rem;
-            text-align: center;
-        }
-        .ps strong {
-            background: #feefc0;
-            padding: 0.3rem 1.5rem;
-            border-radius: 60px;
-        }
-        .table-mini {
-            background: #ebf9f1;
-            border-radius: 50px;
-            padding: 1.5rem;
-            border: 1px solid #b2dac1;
-        }
-        .mini-grid {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            justify-content: center;
+            gap: 1.5rem;
+            background: #ebf9f0;
+            border-radius: 2rem;
+            padding: 1rem 1.8rem;
             margin: 1rem 0;
+            justify-content: space-around;
         }
-        .level-summary {
+
+        .income-stat {
+            text-align: center;
+        }
+
+        .income-stat .label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: #407a5d;
+        }
+
+        .income-stat .value {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: #1b6e48;
+        }
+
+        .ps-message {
+            border-top: 2px solid #d1e8db;
+            margin-top: 1.2rem;
+            padding-top: 0.9rem;
+            text-align: center;
+            font-style: italic;
+            color: #4a7862;
+        }
+
+        .mini-table {
+            background: #eef5f0;
+            border-radius: 2rem;
+            padding: 0.8rem 1.2rem;
+            margin-top: 0.5rem;
+        }
+
+        .level-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .level-card-mini {
             background: white;
             border-radius: 40px;
-            padding: 0.6rem 1rem;
-            min-width: 80px;
+            padding: 6px 14px;
             text-align: center;
-            border: 1px solid #c7e2d3;
+            min-width: 70px;
+            font-weight: 600;
+            color: #1c5e41;
+            font-size: 0.8rem;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.05);
         }
-        .level-summary .lvl {
-            font-weight: 800;
-            color: #1e6242;
+
+        button {
+            transition: all 0.1s ease;
         }
-        .refund-line {
-            font-size:1.3rem; 
-            margin-bottom:0.5rem; 
-            color:#1b543e; 
-            font-weight:500;
+
+        @media (max-width: 720px) {
+            .prestige-card {
+                padding: 1.2rem;
+            }
+            .speech-title {
+                font-size: 1.3rem;
+            }
         }
     </style>
-<base target="_blank">
 </head>
 <body>
-<div class="glass-card" id="appContainer">
-    <h1>✨ 等级点击·双重奖励 <span>差价+活动奖励</span></h1>
-    <div class="sub">点击等级，奖励1(差价百分比) + 奖励2(活动百分比) | 话术自动合并展示</div>
+<div class="prestige-card" id="app">
+    <h1>✨ 晋升荣耀·智能奖励 <small>差价+活动奖励+现金代码+幸运抽奖</small></h1>
+    <div class="subhead">🎯 奖励为0自动隐藏 | 话术内无空行，紧凑展示 | 三语一键复制</div>
 
-    <!-- 等级点击区域 -->
-    <div class="level-click-row">
+    <div class="level-zone">
         <div class="level-pair">
-            <div class="level-block">
-                <span class="level-label">⬅️ 从</span>
-                <div class="level-buttons" data-group="fromLevel">
-                    <button class="level-btn active" data-value="R1">R1</button>
-                    <button class="level-btn" data-value="R2">R2</button>
-                    <button class="level-btn" data-value="R3">R3</button>
-                    <button class="level-btn" data-value="R4">R4</button>
-                    <button class="level-btn" data-value="R5">R5</button>
-                    <button class="level-btn" data-value="R6">R6</button>
-                    <button class="level-btn" data-value="R7">R7</button>
-                    <button class="level-btn" data-value="R8">R8</button>
-                    <button class="level-btn" data-value="R9">R9</button>
+            <div class="level-group">
+                <span class="label">⬅️ 从等级</span>
+                <div class="level-btns" id="fromGroup">
+                    <button data-lvl="R1">R1</button><button data-lvl="R2">R2</button><button data-lvl="R3">R3</button>
+                    <button data-lvl="R4">R4</button><button data-lvl="R5">R5</button><button data-lvl="R6">R6</button>
+                    <button data-lvl="R7">R7</button><button data-lvl="R8">R8</button><button data-lvl="R9">R9</button>
                 </div>
             </div>
-            <span class="arrow-icon">→</span>
-            <div class="level-block">
-                <span class="level-label">到 ➡️</span>
-                <div class="level-buttons" data-group="toLevel">
-                    <button class="level-btn" data-value="R1">R1</button>
-                    <button class="level-btn active" data-value="R2">R2</button>
-                    <button class="level-btn" data-value="R3">R3</button>
-                    <button class="level-btn" data-value="R4">R4</button>
-                    <button class="level-btn" data-value="R5">R5</button>
-                    <button class="level-btn" data-value="R6">R6</button>
-                    <button class="level-btn" data-value="R7">R7</button>
-                    <button class="level-btn" data-value="R8">R8</button>
-                    <button class="level-btn" data-value="R9">R9</button>
+            <div class="arrow-emoj">➡️</div>
+            <div class="level-group">
+                <span class="label">到等级 ➡️</span>
+                <div class="level-btns" id="toGroup">
+                    <button data-lvl="R1">R1</button><button data-lvl="R2">R2</button><button data-lvl="R3">R3</button>
+                    <button data-lvl="R4">R4</button><button data-lvl="R5">R5</button><button data-lvl="R6">R6</button>
+                    <button data-lvl="R7">R7</button><button data-lvl="R8">R8</button><button data-lvl="R9">R9</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- 双重奖励整合行: 额外奖励(差价百分比) + 活动奖励(独立百分比) 且放在额外奖励前面 -->
-    <div class="double-reward-row">
-        <div class="rewards-group">
-            <!-- 活动奖励 (放在额外奖励前面) -->
-            <div class="reward-item">
-                <span class="reward-label">🎉 活动奖励 %</span>
-                <input type="number" id="activityPercent" class="reward-input" value="3" min="0" max="100" step="0.1">
-                <span id="activityBonusInfo" class="bonus-calc-info">基于差价计算</span>
+    <div class="bonus-panel">
+        <div class="bonus-inputs">
+            <div class="bonus-item">
+                <label>🎉 活动奖励 %</label>
+                <input type="number" id="activityPercent" value="3" step="0.5" min="0">
+                <span class="calc-hint" id="activityHint">基于差价</span>
             </div>
-            <!-- 额外奖励 (差价百分比) -->
-            <div class="reward-item">
-                <span class="reward-label">🎁 额外奖励 %</span>
-                <input type="number" id="extraPercent" class="reward-input" value="5" min="0" max="100" step="0.1">
-                <span id="extraBonusInfo" class="bonus-calc-info">基于差价计算</span>
+            <div class="bonus-item">
+                <label>🎁 额外奖励 %</label>
+                <input type="number" id="extraPercent" value="5" step="0.5" min="0">
+                <span class="calc-hint" id="extraHint">基于差价</span>
             </div>
         </div>
-        <button class="copy-btn" data-copy="promo">📋 复制晋升话术</button>
+        <button class="copy-main-btn" id="copySpeechBtn">📋 复制晋升话术</button>
     </div>
 
-    <!-- 语言切换 -->
-    <div class="lang-row">
-        <div class="lang-group" data-group="lang">
-            <button class="lang-btn active" data-value="cn">🇨🇳 中文</button>
-            <button class="lang-btn" data-value="en">🇬🇧 EN</button>
-            <button class="lang-btn" data-value="my">🇲🇾 BM</button>
-        </div>
+    <div class="feature-flags">
+        <label class="flag-item">
+            <input type="checkbox" id="cashCodeCheck"> 💵 现金代码已发放
+        </label>
+        <label class="flag-item">
+            <input type="checkbox" id="luckyDrawCheck"> 🎰 幸运抽奖 (最高赢RM5,888+iPhone 17 Pro Max)
+        </label>
     </div>
 
-    <!-- 晋升卡片 -->
-    <div class="promo-card" id="promoCard">
-        <div class="promo-title" id="promoTitle">🎉 恭喜您成功从 <span class="highlight" id="fromSpan">R1</span> 晋升至 <span class="highlight" id="toSpan">R2</span> 等级！</div>
-        <div id="refundLine" class="refund-line">✨ R1费用已全额退还，升级奖金*RM22.50* 已发放至您的 RS 账户，继续加油！🚀</div>
-
-        <div class="income-banner">
-            <div class="income-item"><span class="income-label">每日收入</span><div class="income-value" id="dailyVal">RM 15.00</div></div>
-            <div class="income-item"><span class="income-label">30天累计</span><div class="income-value" id="monthlyVal">RM 450.00</div></div>
-            <div class="income-item"><span class="income-label">365天累计</span><div class="income-value" id="yearlyVal">RM 5,475.00</div></div>
-        </div>
-
-        <div class="message-body" id="promoBody">
-            这是您财富增长道路上的重要升级，属于您的稳健增值之旅，现已正式启航！🐄💪<br><br>
-            从 R1 到 R2，您已解锁更多订单权限，收入机会持续增加，未来还有更多惊喜等着您！🥛
-        </div>
-
-        <div class="ps" id="promoPs">
-            <strong>PS：</strong>只管用心去做、踏实前行，时间自会给你最好的答案
+    <div class="lang-bar">
+        <div class="lang-group" id="langGroup">
+            <button data-lang="cn">🇨🇳 中文</button>
+            <button data-lang="en">🇬🇧 English</button>
+            <button data-lang="my">🇲🇾 Bahasa Malaysia</button>
         </div>
     </div>
 
-    <!-- 等级速览 -->
-    <div class="table-mini">
-        <div style="display:flex; justify-content:space-between; align-items:center;">
-            <h3 style="color:#1a543e;">📊 等级收益参考</h3>
-            <span style="color:#527a64;">晋升后等级收入</span>
+    <div class="speech-card" id="speechCard">
+        <div class="speech-title" id="speechTitle">🎊 恭喜您成功从 <span class="hl">R1</span> 晋升至 <span class="hl">R2</span></div>
+        <div class="refund-badge" id="refundBlock">
+            💰 晋升礼包已到账：<br>
+            ✅ 全额退还：R1保障金已原路返还
         </div>
-        <div class="mini-grid" id="levelGrid"></div>
+        <div id="extraFeaturesBlock" style="margin: 10px 0 12px 0; font-weight: 500;"></div>
+        <div class="income-dashboard" id="incomeBlock">
+            <div class="income-stat"><span class="label">每个工作日</span><div class="value" id="dailyIncome">RM 15.00</div></div>
+            <div class="income-stat"><span class="label">30个工作日</span><div class="value" id="monthlyIncome">RM 450.00</div></div>
+            <div class="income-stat"><span class="label">365个工作日</span><div class="value" id="yearlyIncome">RM 5,475.00</div></div>
+        </div>
+        <div id="motivationLine" class="ps-message">🐄💪 时间会给出最好的答案，让我们创造更多可能！✨</div>
+    </div>
+
+    <div class="mini-table">
+        <div style="display: flex; justify-content: space-between; align-items: center;"><span style="font-weight:800;">📊 等级收益参考 (晋升后每日收入)</span></div>
+        <div class="level-grid" id="levelQuickGrid"></div>
     </div>
 </div>
 
 <script>
-(function() {
-    const container = document.getElementById('appContainer');
+    (function(){
+        const levelData = {
+            'R1': { daily: 5, monthly: 150, yearly: 1825, price: 150 },
+            'R2': { daily: 15, monthly: 450, yearly: 5475, price: 450 },
+            'R3': { daily: 45, monthly: 1350, yearly: 16425, price: 1350 },
+            'R4': { daily: 160, monthly: 4800, yearly: 58400, price: 4480 },
+            'R5': { daily: 480, monthly: 14400, yearly: 175200, price: 13440 },
+            'R6': { daily: 1200, monthly: 36000, yearly: 438000, price: 32400 },
+            'R7': { daily: 2500, monthly: 75000, yearly: 912500, price: 65000 },
+            'R8': { daily: 5200, monthly: 156000, yearly: 1898000, price: 130000 },
+            'R9': { daily: 10800, monthly: 324000, yearly: 3942000, price: 259200 }
+        };
 
-    let state = {
-        fromLevel: 'R1',
-        toLevel: 'R2',
-        currentLang: 'cn'
-    };
+        let fromLevel = 'R1';
+        let toLevel = 'R2';
+        let currentLang = 'cn';
+        let cashEnabled = false;
+        let luckyEnabled = false;
 
-    // 价格表数据 (R1~R9)
-    const levelData = {
-        'R1': { price: 150, daily: 5, monthly: 150, yearly: 1825 },
-        'R2': { price: 450, daily: 15, monthly: 450, yearly: 5475 },
-        'R3': { price: 1350, daily: 45, monthly: 1350, yearly: 16425 },
-        'R4': { price: 4480, daily: 160, monthly: 4800, yearly: 58400 },
-        'R5': { price: 13440, daily: 480, monthly: 14400, yearly: 175200 },
-        'R6': { price: 32400, daily: 1200, monthly: 36000, yearly: 438000 },
-        'R7': { price: 65000, daily: 2500, monthly: 75000, yearly: 912500 },
-        'R8': { price: 130000, daily: 5200, monthly: 156000, yearly: 1898000 },
-        'R9': { price: 259200, daily: 10800, monthly: 324000, yearly: 3942000 }
-    };
+        const fromGroup = document.getElementById('fromGroup');
+        const toGroup = document.getElementById('toGroup');
+        const langBtns = document.querySelectorAll('[data-lang]');
+        const activityPercentInput = document.getElementById('activityPercent');
+        const extraPercentInput = document.getElementById('extraPercent');
+        const cashCheck = document.getElementById('cashCodeCheck');
+        const luckyCheck = document.getElementById('luckyDrawCheck');
+        const copyBtn = document.getElementById('copySpeechBtn');
 
-    const fromSpan = document.getElementById('fromSpan');
-    const toSpan = document.getElementById('toSpan');
-    const refundLine = document.getElementById('refundLine');
-    const dailyVal = document.getElementById('dailyVal');
-    const monthlyVal = document.getElementById('monthlyVal');
-    const yearlyVal = document.getElementById('yearlyVal');
-    const promoBody = document.getElementById('promoBody');
-    const promoPs = document.getElementById('promoPs');
-    const promoTitle = document.getElementById('promoTitle');
-    
-    const extraInput = document.getElementById('extraPercent');
-    const activityInput = document.getElementById('activityPercent');
-    const extraBonusInfo = document.getElementById('extraBonusInfo');
-    const activityBonusInfo = document.getElementById('activityBonusInfo');
+        const speechTitleSpan = document.getElementById('speechTitle');
+        const refundBlockDiv = document.getElementById('refundBlock');
+        const extraFeaturesDiv = document.getElementById('extraFeaturesBlock');
+        const dailySpan = document.getElementById('dailyIncome');
+        const monthlySpan = document.getElementById('monthlyIncome');
+        const yearlySpan = document.getElementById('yearlyIncome');
+        const motivationLine = document.getElementById('motivationLine');
+        const activityHint = document.getElementById('activityHint');
+        const extraHint = document.getElementById('extraHint');
 
-    function renderLevelGrid() {
-        const grid = document.getElementById('levelGrid');
-        if (!grid) return;
-        let html = '';
-        const levels = ['R1','R2','R3','R4','R5','R6','R7','R8','R9'];
-        levels.forEach(l => {
-            const d = levelData[l];
-            html += `<div class="level-summary"><span class="lvl">${l}</span><br><small>RM ${d.daily}/日</small><br><small>RM ${d.monthly}/月</small></div>`;
-        });
-        grid.innerHTML = html;
-    }
-
-    function formatMoney(value) {
-        return value.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
-    }
-
-    // 获取差价差值
-    function getPriceDiff() {
-        const fromPrice = levelData[state.fromLevel].price;
-        const toPrice = levelData[state.toLevel].price;
-        const diff = toPrice - fromPrice;
-        return diff > 0 ? diff : 0;
-    }
-
-    // 额外奖励金额 (差价百分比)
-    function getExtraBonus() {
-        const percent = parseFloat(extraInput.value) || 0;
-        const diff = getPriceDiff();
-        if (percent <= 0 || diff <= 0) return 0;
-        return (percent / 100) * diff;
-    }
-
-    // 活动奖励金额 (差价百分比)
-    function getActivityBonus() {
-        const percent = parseFloat(activityInput.value) || 0;
-        const diff = getPriceDiff();
-        if (percent <= 0 || diff <= 0) return 0;
-        return (percent / 100) * diff;
-    }
-
-    // 总奖励金额 (额外+活动)
-    function getTotalBonus() {
-        return getExtraBonus() + getActivityBonus();
-    }
-
-    function updateBonusCalcInfos() {
-        const diff = getPriceDiff();
-        const extraPercent = parseFloat(extraInput.value) || 0;
-        const activityPercent = parseFloat(activityInput.value) || 0;
-        if (state.currentLang === 'cn') {
-            extraBonusInfo.textContent = `差价 RM ${diff.toFixed(2)} × ${extraPercent}%`;
-            activityBonusInfo.textContent = `差价 RM ${diff.toFixed(2)} × ${activityPercent}%`;
-        } else if (state.currentLang === 'en') {
-            extraBonusInfo.textContent = `Diff RM ${diff.toFixed(2)} × ${extraPercent}%`;
-            activityBonusInfo.textContent = `Diff RM ${diff.toFixed(2)} × ${activityPercent}%`;
-        } else {
-            extraBonusInfo.textContent = `Beza RM ${diff.toFixed(2)} × ${extraPercent}%`;
-            activityBonusInfo.textContent = `Beza RM ${diff.toFixed(2)} × ${activityPercent}%`;
+        function getPriceDiff() {
+            const fromPrice = levelData[fromLevel]?.price || 0;
+            const toPrice = levelData[toLevel]?.price || 0;
+            const diff = toPrice - fromPrice;
+            return diff > 0 ? diff : 0;
         }
-    }
 
-    // 核心生成话术：活动奖励放在额外奖励前面展示
-    function generateFullSpeech(lang, from, to, activityBonus, extraBonus, totalBonus) {
-        const data = levelData[to];
-        const daily = formatMoney(data.daily);
-        const monthly = formatMoney(data.monthly);
-        const yearly = formatMoney(data.yearly);
-        const hasTotal = totalBonus > 0;
-        const activityBonusText = activityBonus.toFixed(2);
-        const extraBonusText = extraBonus.toFixed(2);
-        const totalBonusText = totalBonus.toFixed(2);
+        function getActivityBonus() {
+            const percent = parseFloat(activityPercentInput.value) || 0;
+            const diff = getPriceDiff();
+            return (percent / 100) * diff;
+        }
 
-        // 构建奖励行文本: 活动奖励在前，额外奖励在后 (根据语言)
-        let rewardLine = '';
-        if (lang === 'cn') {
-            if (hasTotal) {
-                if (activityBonus > 0 && extraBonus > 0) {
-                    rewardLine = `✨ ${from}费用已全额退还，活动奖金*RM${activityBonusText}* + 额外奖金*RM${extraBonusText}* 合计*RM${totalBonusText}* 已发放至您的 RS 账户，继续加油！🚀`;
-                } else if (activityBonus > 0) {
-                    rewardLine = `✨ ${from}费用已全额退还，活动奖金*RM${activityBonusText}* 已发放至您的 RS 账户，继续加油！🚀`;
-                } else if (extraBonus > 0) {
-                    rewardLine = `✨ ${from}费用已全额退还，额外奖金*RM${extraBonusText}* 已发放至您的 RS 账户，继续加油！🚀`;
-                } else {
-                    rewardLine = `✨ ${from}费用已全额退还，继续加油！🚀`;
-                }
+        function getExtraBonus() {
+            const percent = parseFloat(extraPercentInput.value) || 0;
+            const diff = getPriceDiff();
+            return (percent / 100) * diff;
+        }
+
+        function getTotalBonus() {
+            return getActivityBonus() + getExtraBonus();
+        }
+
+        function formatMoneyRM(val) {
+            return `RM ${val.toFixed(2)}`;
+        }
+
+        function updateHint() {
+            const diff = getPriceDiff();
+            const diffFixed = diff.toFixed(2);
+            const actPer = parseFloat(activityPercentInput.value) || 0;
+            const extPer = parseFloat(extraPercentInput.value) || 0;
+            if(currentLang === 'cn'){
+                activityHint.innerText = `差价 RM${diffFixed} × ${actPer}%`;
+                extraHint.innerText = `差价 RM${diffFixed} × ${extPer}%`;
+            } else if(currentLang === 'en'){
+                activityHint.innerText = `Diff RM${diffFixed} x ${actPer}%`;
+                extraHint.innerText = `Diff RM${diffFixed} x ${extPer}%`;
             } else {
-                rewardLine = `✨ ${from}费用已全额退还，继续加油！🚀`;
-            }
-        } else if (lang === 'en') {
-            if (hasTotal) {
-                if (activityBonus > 0 && extraBonus > 0) {
-                    rewardLine = `✨ ${from} fee fully refunded, activity bonus *RM${activityBonusText}* + extra bonus *RM${extraBonusText}* total *RM${totalBonusText}* credited to your RS account. Keep it up! 🚀`;
-                } else if (activityBonus > 0) {
-                    rewardLine = `✨ ${from} fee fully refunded, activity bonus *RM${activityBonusText}* credited to your RS account. Keep it up! 🚀`;
-                } else if (extraBonus > 0) {
-                    rewardLine = `✨ ${from} fee fully refunded, extra bonus *RM${extraBonusText}* credited to your RS account. Keep it up! 🚀`;
-                } else {
-                    rewardLine = `✨ ${from} fee fully refunded. Keep it up! 🚀`;
-                }
-            } else {
-                rewardLine = `✨ ${from} fee fully refunded. Keep it up! 🚀`;
-            }
-        } else { // BM
-            if (hasTotal) {
-                if (activityBonus > 0 && extraBonus > 0) {
-                    rewardLine = `✨ Yuran ${from} dikembalikan sepenuhnya, bonus aktiviti *RM${activityBonusText}* + bonus tambahan *RM${extraBonusText}* jumlah *RM${totalBonusText}* dikreditkan ke akaun RS anda. Teruskan! 🚀`;
-                } else if (activityBonus > 0) {
-                    rewardLine = `✨ Yuran ${from} dikembalikan sepenuhnya, bonus aktiviti *RM${activityBonusText}* dikreditkan ke akaun RS anda. Teruskan! 🚀`;
-                } else if (extraBonus > 0) {
-                    rewardLine = `✨ Yuran ${from} dikembalikan sepenuhnya, bonus tambahan *RM${extraBonusText}* dikreditkan ke akaun RS anda. Teruskan! 🚀`;
-                } else {
-                    rewardLine = `✨ Yuran ${from} dikembalikan sepenuhnya. Teruskan! 🚀`;
-                }
-            } else {
-                rewardLine = `✨ Yuran ${from} dikembalikan sepenuhnya. Teruskan! 🚀`;
+                activityHint.innerText = `Beza RM${diffFixed} x ${actPer}%`;
+                extraHint.innerText = `Beza RM${diffFixed} x ${extPer}%`;
             }
         }
 
-        let title = '', incomeBlock = '', bodyMain = '', psText = '';
-        if (lang === 'cn') {
-            title = `🎉 恭喜您成功从 ${from} 晋升至 ${to} 等级！`;
-            incomeBlock = `📈 收入稳健增长\n每日收入预估：*RM ${daily}*\n30 天累计收入：*RM ${monthly}*\n365 天累计收入：*RM ${yearly}*`;
-            bodyMain = `这是您财富增长道路上的重要升级，属于您的稳健增值之旅，现已正式启航！🐄💪\n\n从 ${from} 到 ${to}，您已解锁更多订单权限，收入机会持续增加，未来还有更多惊喜等着您！🥛`;
-            psText = `PS：只管用心去做、踏实前行，时间自会给你最好的答案`;
-        } else if (lang === 'en') {
-            title = `🎉 Congratulations on your successful promotion from ${from} to ${to}!`;
-            incomeBlock = `📈 Steady Income Growth\nEstimated daily income: *RM ${daily}*\n30-day cumulative: *RM ${monthly}*\n365-day cumulative: *RM ${yearly}*`;
-            bodyMain = `This is a significant upgrade on your wealth growth path. Your journey of steady value appreciation has now officially begun! 🐄💪\n\nFrom ${from} to ${to}, you have unlocked more order privileges and income opportunities. More surprises await you in the future! 🥛`;
-            psText = `PS: Just do it with heart and move forward steadily; time will give you the best answer.`;
-        } else {
-            title = `🎉 Tahniah atas kenaikan pangkat anda dari ${from} ke ${to}!`;
-            incomeBlock = `📈 Pertumbuhan Pendapatan Stabil\nAnggaran pendapatan harian: *RM ${daily}*\nKumulatif 30 hari: *RM ${monthly}*\nKumulatif 365 hari: *RM ${yearly}*`;
-            bodyMain = `Ini adalah peningkatan penting dalam laluan pertumbuhan kekayaan anda. Perjalanan peningkatan nilai stabil anda kini secara rasmi bermula! 🐄💪\n\nDari ${from} ke ${to}, anda telah membuka lebih banyak keistimewaan pesanan dan peluang pendapatan. Lebih banyak kejutan menanti anda pada masa hadapan! 🥛`;
-            psText = `PS: Lakukan dengan hati dan maju dengan mantap; masa akan memberikan jawapan terbaik.`;
+        // 核心：生成无空行话术 (全部使用 \n 但去除多余空行，这里保证段内换行但段落之间没有空行)
+        // 完全删除空行: 最终字符串中不包含两个连续的换行符，每个部分之间直接单换行衔接。
+        function generateOptimizedSpeech() {
+            const from = fromLevel;
+            const to = toLevel;
+            const activityBonus = getActivityBonus();
+            const extraBonus = getExtraBonus();
+            const totalBonus = activityBonus + extraBonus;
+            const toData = levelData[to];
+            const dailyVal = toData.daily;
+            const monthlyVal = toData.monthly;
+            const yearlyVal = toData.yearly;
+            const cashActive = cashEnabled;
+            const luckyActive = luckyEnabled;
+
+            const hasActivity = activityBonus > 0;
+            const hasExtra = extraBonus > 0;
+            const hasAnyBonus = hasActivity || hasExtra;
+
+            let rewardDetail = '';
+            if(currentLang === 'cn'){
+                if(hasAnyBonus){
+                    let line = `💰 *晋升礼包已到账*：\n✅ *全额退还*：${from}保障金已原路返还`;
+                    if(hasActivity) line += `\n✅ *活动奖励*：${formatMoneyRM(activityBonus)}`;
+                    if(hasExtra) line += ` + *额外奖励*：${formatMoneyRM(extraBonus)}`;
+                    line += `\n🎁 总计 ${formatMoneyRM(totalBonus)} 奖励已存入您的 RS 账户！`;
+                    rewardDetail = line;
+                } else {
+                    rewardDetail = `💰 *晋升礼包已到账*：\n✅ *全额退还*：${from}保障金已原路返还`;
+                }
+            } 
+            else if(currentLang === 'en'){
+                if(hasAnyBonus){
+                    let line = `💰 *Promotion Gift Credited*:\n✅ *Full Refund*: ${from} deposit returned`;
+                    if(hasActivity) line += `\n✅ *Activity Bonus*: ${formatMoneyRM(activityBonus)}`;
+                    if(hasExtra) line += ` + *Extra Bonus*: ${formatMoneyRM(extraBonus)}`;
+                    line += `\n🎁 Total ${formatMoneyRM(totalBonus)} credited to your RS account!`;
+                    rewardDetail = line;
+                } else {
+                    rewardDetail = `💰 *Promotion Gift Credited*:\n✅ *Full Refund*: ${from} deposit returned`;
+                }
+            } 
+            else {
+                if(hasAnyBonus){
+                    let line = `💰 *Hadiah Kenaikan Pangkat Dikreditkan*:\n✅ *Bayaran Balik Penuh*: Deposit ${from} dikembalikan`;
+                    if(hasActivity) line += `\n✅ *Bonus Aktiviti*: ${formatMoneyRM(activityBonus)}`;
+                    if(hasExtra) line += ` + *Bonus Tambahan*: ${formatMoneyRM(extraBonus)}`;
+                    line += `\n🎁 Jumlah ${formatMoneyRM(totalBonus)} dimasukkan ke akaun RS anda!`;
+                    rewardDetail = line;
+                } else {
+                    rewardDetail = `💰 *Hadiah Kenaikan Pangkat Dikreditkan*:\n✅ *Bayaran Balik Penuh*: Deposit ${from} dikembalikan`;
+                }
+            }
+
+            let cashText = '';
+            if(cashActive){
+                if(currentLang === 'cn') cashText = '*现金代码已发放，请查收* 💪';
+                else if(currentLang === 'en') cashText = '*Cash code has been sent, please check* 💪';
+                else cashText = '*Kod tunai telah dihantar, sila semak* 💪';
+            }
+
+            let luckyText = '';
+            if(luckyActive){
+                if(currentLang === 'cn') luckyText = '🌟 *幸运抽奖开启*：\n最高赢取 RM5,888 现金 + iPhone 17 Pro Max 📱\n（*请截图分享至 RS 群组，让大家见证您的晋升时刻*）';
+                else if(currentLang === 'en') luckyText = '🌟 *Lucky Draw Open*:\nWin up to RM5,888 cash + iPhone 17 Pro Max 📱\n(*Please screenshot and share in RS group to celebrate your promotion*)';
+                else luckyText = '🌟 *Cabutan Bertuah Dibuka*:\nMenang sehingga RM5,888 tunai + iPhone 17 Pro Max 📱\n(*Sila tangkap skrin dan kongsi ke kumpulan RS untuk meraikan kenaikan pangkat anda*)';
+            }
+
+            let incomeSection = '';
+            if(currentLang === 'cn'){
+                incomeSection = `💸 *${to} 收益*：\n每个工作日：*${formatMoneyRM(dailyVal)}*\n30个工作日：*${formatMoneyRM(monthlyVal)}*\n365个工作日：*${formatMoneyRM(yearlyVal)}*`;
+            } else if(currentLang === 'en'){
+                incomeSection = `💸 *${to} Earnings*:\nPer working day: *${formatMoneyRM(dailyVal)}*\n30 working days: *${formatMoneyRM(monthlyVal)}*\n365 working days: *${formatMoneyRM(yearlyVal)}*`;
+            } else {
+                incomeSection = `💸 *Pendapatan ${to}*:\nSetiap hari bekerja: *${formatMoneyRM(dailyVal)}*\n30 hari bekerja: *${formatMoneyRM(monthlyVal)}*\n365 hari bekerja: *${formatMoneyRM(yearlyVal)}*`;
+            }
+
+            let closingLine = '';
+            if(currentLang === 'cn') closingLine = '🐄💪 时间会给出最好的答案，让我们创造更多可能！✨';
+            else if(currentLang === 'en') closingLine = '🐄💪 Time will give the best answer, let’s create more possibilities! ✨';
+            else closingLine = '🐄💪 Masa akan memberikan jawapan terbaik, mari kita cipta lebih banyak kemungkinan! ✨';
+
+            let titleRaw = '';
+            if(currentLang === 'cn') titleRaw = `🎊 恭喜您成功从 *${from}* 晋升至 *${to}*\n您的财富增长之路，正式迈入新阶段！📈`;
+            else if(currentLang === 'en') titleRaw = `🎊 Congratulations on your promotion from *${from}* to *${to}*\nYour wealth growth journey has officially entered a new stage! 📈`;
+            else titleRaw = `🎊 Tahniah atas kenaikan pangkat anda dari *${from}* ke *${to}*\nPerjalanan pertumbuhan kekayaan anda memasuki peringkat baharu! 📈`;
+
+            // 构建无空行版本：按照顺序直接拼接，各部分之间只有一个 \n（而不是两个）
+            let parts = [titleRaw, rewardDetail];
+            if(cashText) parts.push(cashText);
+            if(luckyText) parts.push(luckyText);
+            parts.push(incomeSection);
+            parts.push(closingLine);
+            
+            // 用单换行连接，确保没有多余空行（连续两个\n的情况不会出现）
+            let fullSpeech = parts.join('\n');
+            // 额外清理可能因为部分空串导致的多余换行 (安全)
+            fullSpeech = fullSpeech.replace(/\n{2,}/g, '\n');
+            return fullSpeech;
         }
 
-        return `${title}\n\n${rewardLine}\n\n${incomeBlock}\n\n${bodyMain}\n\n${psText}`;
-    }
+        function updatePreviewUI() {
+            const from = fromLevel;
+            const to = toLevel;
+            const activityBonus = getActivityBonus();
+            const extraBonus = getExtraBonus();
+            const total = activityBonus + extraBonus;
+            const toData = levelData[to];
+            const hasAct = activityBonus > 0;
+            const hasExt = extraBonus > 0;
+            const hasAny = hasAct || hasExt;
 
-    function syncActiveClasses() {
-        document.querySelectorAll('[data-group="fromLevel"] .level-btn').forEach(btn => {
-            btn.classList.toggle('active', btn.dataset.value === state.fromLevel);
-        });
-        document.querySelectorAll('[data-group="toLevel"] .level-btn').forEach(btn => {
-            btn.classList.toggle('active', btn.dataset.value === state.toLevel);
-        });
-        document.querySelectorAll('[data-group="lang"] .lang-btn').forEach(btn => {
-            btn.classList.toggle('active', btn.dataset.value === state.currentLang);
-        });
-    }
-
-    function refreshUI() {
-        const from = state.fromLevel;
-        const to = state.toLevel;
-        const data = levelData[to];
-        const lang = state.currentLang;
-        const activityBonus = getActivityBonus();
-        const extraBonus = getExtraBonus();
-        const totalBonus = activityBonus + extraBonus;
-        
-        updateBonusCalcInfos();
-
-        fromSpan.innerText = from;
-        toSpan.innerText = to;
-        dailyVal.innerHTML = `RM ${formatMoney(data.daily)}`;
-        monthlyVal.innerHTML = `RM ${formatMoney(data.monthly)}`;
-        yearlyVal.innerHTML = `RM ${formatMoney(data.yearly)}`;
-
-        // 根据语言更新卡片内展示（与话术内容保持一致，活动奖励在前）
-        if (lang === 'cn') {
-            promoTitle.innerHTML = `🎉 恭喜您成功从 <span class="highlight">${from}</span> 晋升至 <span class="highlight">${to}</span> 等级！`;
-            if (totalBonus > 0) {
-                if (activityBonus > 0 && extraBonus > 0) {
-                    refundLine.innerHTML = `✨ ${from}费用已全额退还，活动奖金*RM${activityBonus.toFixed(2)}* + 额外奖金*RM${extraBonus.toFixed(2)}* 合计*RM${totalBonus.toFixed(2)}* 已发放至您的 RS 账户，继续加油！🚀`;
-                } else if (activityBonus > 0) {
-                    refundLine.innerHTML = `✨ ${from}费用已全额退还，活动奖金*RM${activityBonus.toFixed(2)}* 已发放至您的 RS 账户，继续加油！🚀`;
-                } else {
-                    refundLine.innerHTML = `✨ ${from}费用已全额退还，额外奖金*RM${extraBonus.toFixed(2)}* 已发放至您的 RS 账户，继续加油！🚀`;
-                }
+            if(currentLang === 'cn'){
+                speechTitleSpan.innerHTML = `🎊 恭喜您成功从 <span class="hl">${from}</span> 晋升至 <span class="hl">${to}</span><br>您的财富增长之路，正式迈入新阶段！📈`;
+            } else if(currentLang === 'en'){
+                speechTitleSpan.innerHTML = `🎊 Congratulations on your promotion from <span class="hl">${from}</span> to <span class="hl">${to}</span><br>Your wealth growth journey has entered a new stage! 📈`;
             } else {
-                refundLine.innerHTML = `✨ ${from} 费用已全额退还，继续加油！🚀`;
+                speechTitleSpan.innerHTML = `🎊 Tahniah atas kenaikan pangkat anda dari <span class="hl">${from}</span> ke <span class="hl">${to}</span><br>Perjalanan pertumbuhan kekayaan anda memasuki peringkat baharu! 📈`;
             }
-            promoBody.innerHTML = `这是您财富增长道路上的重要升级，属于您的稳健增值之旅，现已正式启航！🐄💪<br><br>从 ${from} 到 ${to}，您已解锁更多订单权限，收入机会持续增加，未来还有更多惊喜等着您！🥛`;
-            promoPs.innerHTML = `<strong>PS：</strong>只管用心去做、踏实前行，时间自会给你最好的答案`;
-        } else if (lang === 'en') {
-            promoTitle.innerHTML = `🎉 Congratulations on your successful promotion from <span class="highlight">${from}</span> to <span class="highlight">${to}</span>!`;
-            if (totalBonus > 0) {
-                if (activityBonus > 0 && extraBonus > 0) {
-                    refundLine.innerHTML = `✨ ${from} fee fully refunded, activity bonus *RM${activityBonus.toFixed(2)}* + extra bonus *RM${extraBonus.toFixed(2)}* total *RM${totalBonus.toFixed(2)}* credited to your RS account. Keep it up! 🚀`;
-                } else if (activityBonus > 0) {
-                    refundLine.innerHTML = `✨ ${from} fee fully refunded, activity bonus *RM${activityBonus.toFixed(2)}* credited to your RS account. Keep it up! 🚀`;
+
+            let rewardHtml = '';
+            if(currentLang === 'cn'){
+                if(hasAny){
+                    let base = `💰 <strong>晋升礼包已到账</strong>：<br>✅ <strong>全额退还</strong>：${from}保障金已原路返还`;
+                    if(hasAct) base += `<br>✅ <strong>活动奖励</strong>：${formatMoneyRM(activityBonus)}`;
+                    if(hasExt) base += ` + <strong>额外奖励</strong>：${formatMoneyRM(extraBonus)}`;
+                    base += `<br>🎁 总计 ${formatMoneyRM(total)} 奖励已存入您的 RS 账户！`;
+                    rewardHtml = base;
                 } else {
-                    refundLine.innerHTML = `✨ ${from} fee fully refunded, extra bonus *RM${extraBonus.toFixed(2)}* credited to your RS account. Keep it up! 🚀`;
+                    rewardHtml = `💰 <strong>晋升礼包已到账</strong>：<br>✅ <strong>全额退还</strong>：${from}保障金已原路返还`;
                 }
-            } else {
-                refundLine.innerHTML = `✨ ${from} fee fully refunded. Keep it up! 🚀`;
-            }
-            promoBody.innerHTML = `This is a significant upgrade on your wealth growth path. Your journey of steady value appreciation has now officially begun! 🐄💪<br><br>From ${from} to ${to}, you have unlocked more order privileges and income opportunities. More surprises await you in the future! 🥛`;
-            promoPs.innerHTML = `<strong>PS:</strong> Just do it with heart and move forward steadily; time will give you the best answer.`;
-        } else {
-            promoTitle.innerHTML = `🎉 Tahniah atas kenaikan pangkat anda dari <span class="highlight">${from}</span> ke <span class="highlight">${to}</span>!`;
-            if (totalBonus > 0) {
-                if (activityBonus > 0 && extraBonus > 0) {
-                    refundLine.innerHTML = `✨ Yuran ${from} dikembalikan sepenuhnya, bonus aktiviti *RM${activityBonus.toFixed(2)}* + bonus tambahan *RM${extraBonus.toFixed(2)}* jumlah *RM${totalBonus.toFixed(2)}* dikreditkan ke akaun RS anda. Teruskan! 🚀`;
-                } else if (activityBonus > 0) {
-                    refundLine.innerHTML = `✨ Yuran ${from} dikembalikan sepenuhnya, bonus aktiviti *RM${activityBonus.toFixed(2)}* dikreditkan ke akaun RS anda. Teruskan! 🚀`;
+            } 
+            else if(currentLang === 'en'){
+                if(hasAny){
+                    let base = `💰 <strong>Promotion Gift Credited</strong>:<br>✅ <strong>Full Refund</strong>: ${from} deposit returned`;
+                    if(hasAct) base += `<br>✅ <strong>Activity Bonus</strong>: ${formatMoneyRM(activityBonus)}`;
+                    if(hasExt) base += ` + <strong>Extra Bonus</strong>: ${formatMoneyRM(extraBonus)}`;
+                    base += `<br>🎁 Total ${formatMoneyRM(total)} credited to your RS account!`;
+                    rewardHtml = base;
                 } else {
-                    refundLine.innerHTML = `✨ Yuran ${from} dikembalikan sepenuhnya, bonus tambahan *RM${extraBonus.toFixed(2)}* dikreditkan ke akaun RS anda. Teruskan! 🚀`;
+                    rewardHtml = `💰 <strong>Promotion Gift Credited</strong>:<br>✅ <strong>Full Refund</strong>: ${from} deposit returned`;
                 }
-            } else {
-                refundLine.innerHTML = `✨ Yuran ${from} dikembalikan sepenuhnya. Teruskan! 🚀`;
+            } 
+            else {
+                if(hasAny){
+                    let base = `💰 <strong>Hadiah Kenaikan Pangkat Dikreditkan</strong>:<br>✅ <strong>Bayaran Balik Penuh</strong>: Deposit ${from} dikembalikan`;
+                    if(hasAct) base += `<br>✅ <strong>Bonus Aktiviti</strong>: ${formatMoneyRM(activityBonus)}`;
+                    if(hasExt) base += ` + <strong>Bonus Tambahan</strong>: ${formatMoneyRM(extraBonus)}`;
+                    base += `<br>🎁 Jumlah ${formatMoneyRM(total)} dimasukkan ke akaun RS anda!`;
+                    rewardHtml = base;
+                } else {
+                    rewardHtml = `💰 <strong>Hadiah Kenaikan Pangkat Dikreditkan</strong>:<br>✅ <strong>Bayaran Balik Penuh</strong>: Deposit ${from} dikembalikan`;
+                }
             }
-            promoBody.innerHTML = `Ini adalah peningkatan penting dalam laluan pertumbuhan kekayaan anda. Perjalanan peningkatan nilai stabil anda kini secara rasmi bermula! 🐄💪<br><br>Dari ${from} ke ${to}, anda telah membuka lebih banyak keistimewaan pesanan dan peluang pendapatan. Lebih banyak kejutan menanti anda pada masa hadapan! 🥛`;
-            promoPs.innerHTML = `<strong>PS:</strong> Lakukan dengan hati dan maju dengan mantap; masa akan memberikan jawapan terbaik.`;
+            refundBlockDiv.innerHTML = rewardHtml;
+
+            let extraHtml = '';
+            if(cashEnabled){
+                if(currentLang === 'cn') extraHtml += '<div style="background:#FDF6E3; border-radius: 60px; padding: 8px 16px; margin: 8px 0;">💵 *现金代码已发放，请查收* 💪</div>';
+                else if(currentLang === 'en') extraHtml += '<div style="background:#FDF6E3; border-radius: 60px; padding: 8px 16px; margin: 8px 0;">💵 *Cash code has been sent, please check* 💪</div>';
+                else extraHtml += '<div style="background:#FDF6E3; border-radius: 60px; padding: 8px 16px; margin: 8px 0;">💵 *Kod tunai telah dihantar, sila semak* 💪</div>';
+            }
+            if(luckyEnabled){
+                if(currentLang === 'cn') extraHtml += '<div style="background:#FFF0D6; border-radius: 60px; padding: 10px 16px; margin: 10px 0;">🌟 <strong>幸运抽奖开启</strong>：<br>最高赢取 RM5,888 现金 + iPhone 17 Pro Max 📱<br>（*请截图分享至 RS 群组，让大家见证您的晋升时刻*）</div>';
+                else if(currentLang === 'en') extraHtml += '<div style="background:#FFF0D6; border-radius: 60px; padding: 10px 16px; margin: 10px 0;">🌟 <strong>Lucky Draw Open</strong>:<br>Win up to RM5,888 cash + iPhone 17 Pro Max 📱<br>(*Please screenshot and share in RS group to celebrate*)</div>';
+                else extraHtml += '<div style="background:#FFF0D6; border-radius: 60px; padding: 10px 16px; margin: 10px 0;">🌟 <strong>Cabutan Bertuah Dibuka</strong>:<br>Menang sehingga RM5,888 tunai + iPhone 17 Pro Max 📱<br>(*Sila tangkap skrin dan kongsi ke kumpulan RS*)</div>';
+            }
+            extraFeaturesDiv.innerHTML = extraHtml;
+
+            dailySpan.innerText = formatMoneyRM(toData.daily);
+            monthlySpan.innerText = formatMoneyRM(toData.monthly);
+            yearlySpan.innerText = formatMoneyRM(toData.yearly);
+            
+            if(currentLang === 'cn') motivationLine.innerHTML = '🐄💪 时间会给出最好的答案，让我们创造更多可能！✨';
+            else if(currentLang === 'en') motivationLine.innerHTML = '🐄💪 Time will give the best answer, let’s create more possibilities! ✨';
+            else motivationLine.innerHTML = '🐄💪 Masa akan memberikan jawapan terbaik, mari kita cipta lebih banyak kemungkinan! ✨';
         }
-    }
 
-    container.addEventListener('click', (e) => {
-        const target = e.target;
-
-        if (target.classList.contains('level-btn') || target.classList.contains('lang-btn')) {
-            const group = target.closest('[data-group]')?.dataset.group;
-            const value = target.dataset.value;
-            if (!group || !value) return;
-
-            if (group === 'fromLevel') {
-                const fromNum = parseInt(value.replace('R',''));
-                const toNum = parseInt(state.toLevel.replace('R',''));
-                if (fromNum >= toNum) {
-                    if (fromNum < 9) {
-                        state.toLevel = `R${fromNum + 1}`;
-                    } else {
-                        state.toLevel = 'R9';
-                    }
-                }
-                state.fromLevel = value;
-            } else if (group === 'toLevel') {
-                const fromNum = parseInt(state.fromLevel.replace('R',''));
-                const toNum = parseInt(value.replace('R',''));
-                if (toNum <= fromNum) {
-                    if (fromNum < 9) {
-                        state.toLevel = `R${fromNum + 1}`;
-                    } else {
-                        state.toLevel = 'R9';
-                    }
-                } else {
-                    state.toLevel = value;
-                }
-            } else if (group === 'lang') {
-                state.currentLang = value;
-            } else {
-                return;
-            }
+        function refreshAll() {
+            updateHint();
+            updatePreviewUI();
             syncActiveClasses();
-            refreshUI();
-            e.preventDefault();
         }
 
-        if (target.classList.contains('copy-btn') || target.closest('.copy-btn')) {
-            const btn = target.closest('.copy-btn');
-            if (!btn) return;
-            const fullText = generateFullSpeech(state.currentLang, state.fromLevel, state.toLevel, getActivityBonus(), getExtraBonus(), getTotalBonus());
-            navigator.clipboard.writeText(fullText).then(() => {
-                const originalText = btn.innerText;
-                btn.innerText = '✅ 已复制！';
-                btn.classList.add('copy-success');
-                setTimeout(() => {
-                    btn.innerText = originalText;
-                    btn.classList.remove('copy-success');
-                }, 1500);
-            }).catch(() => alert('复制失败，请手动复制'));
-            e.preventDefault();
+        function syncActiveClasses() {
+            document.querySelectorAll('#fromGroup button').forEach(btn => {
+                btn.classList.toggle('active', btn.getAttribute('data-lvl') === fromLevel);
+            });
+            document.querySelectorAll('#toGroup button').forEach(btn => {
+                btn.classList.toggle('active', btn.getAttribute('data-lvl') === toLevel);
+            });
+            document.querySelectorAll('[data-lang]').forEach(btn => {
+                btn.classList.toggle('active', btn.getAttribute('data-lang') === currentLang);
+            });
         }
-    });
 
-    extraInput.addEventListener('input', refreshUI);
-    activityInput.addEventListener('input', refreshUI);
+        function handleFromClick(lvl){
+            const fromNum = parseInt(lvl.replace('R',''));
+            const toNum = parseInt(toLevel.replace('R',''));
+            if(fromNum >= toNum){
+                let newToNum = fromNum + 1;
+                if(newToNum > 9) newToNum = 9;
+                toLevel = `R${newToNum}`;
+            }
+            fromLevel = lvl;
+            refreshAll();
+        }
 
-    syncActiveClasses();
-    renderLevelGrid();
-    refreshUI();
-})();
+        function handleToClick(lvl){
+            const fromNum = parseInt(fromLevel.replace('R',''));
+            const toNum = parseInt(lvl.replace('R',''));
+            if(toNum <= fromNum){
+                let newTo = fromNum + 1;
+                if(newTo > 9) newTo = 9;
+                toLevel = `R${newTo}`;
+            } else {
+                toLevel = lvl;
+            }
+            refreshAll();
+        }
+
+        fromGroup.addEventListener('click', (e) => {
+            if(e.target.tagName === 'BUTTON' && e.target.dataset.lvl){
+                handleFromClick(e.target.dataset.lvl);
+            }
+        });
+        toGroup.addEventListener('click', (e) => {
+            if(e.target.tagName === 'BUTTON' && e.target.dataset.lvl){
+                handleToClick(e.target.dataset.lvl);
+            }
+        });
+        langBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                currentLang = btn.dataset.lang;
+                refreshAll();
+            });
+        });
+        activityPercentInput.addEventListener('input', refreshAll);
+        extraPercentInput.addEventListener('input', refreshAll);
+        cashCheck.addEventListener('change', (e) => { cashEnabled = e.target.checked; refreshAll(); });
+        luckyCheck.addEventListener('change', (e) => { luckyEnabled = e.target.checked; refreshAll(); });
+        
+        copyBtn.addEventListener('click', () => {
+            const finalText = generateOptimizedSpeech();
+            navigator.clipboard.writeText(finalText).then(() => {
+                const original = copyBtn.innerText;
+                copyBtn.innerText = '✅ 已复制！';
+                setTimeout(() => { copyBtn.innerText = original; }, 1500);
+            }).catch(() => alert('复制失败，可手动选取'));
+        });
+        
+        function renderLevelGrid() {
+            const grid = document.getElementById('levelQuickGrid');
+            const levels = ['R1','R2','R3','R4','R5','R6','R7','R8','R9'];
+            grid.innerHTML = levels.map(l => `<div class="level-card-mini"><strong>${l}</strong><br>RM ${levelData[l].daily}/日</div>`).join('');
+        }
+        renderLevelGrid();
+        refreshAll();
+    })();
 </script>
 </body>
 </html>
