@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>晋升荣耀·智能奖励｜三语话术 (无空行版) 差价+活动奖励+现金代码+幸运抽奖</title>
+    <title>晋升荣耀·智能奖励｜三语话术 · 无奖励时仅显示退还</title>
     <style>
         * {
             margin: 0;
@@ -302,6 +302,7 @@
             border-left: 7px solid #f3bc5c;
             font-weight: 500;
             line-height: 1.5;
+            transition: all 0.1s;
         }
 
         .income-dashboard {
@@ -385,7 +386,7 @@
 <body>
 <div class="prestige-card" id="app">
     <h1>✨ 晋升荣耀·智能奖励 <small>差价+活动奖励+现金代码+幸运抽奖</small></h1>
-    <div class="subhead">🎯 奖励为0自动隐藏 | 话术内无空行，紧凑展示 | 三语一键复制</div>
+    <div class="subhead">🎯 奖励为0时仅显示全额退还 | 话术内无空行 | 三语一键复制</div>
 
     <div class="level-zone">
         <div class="level-pair">
@@ -413,12 +414,12 @@
         <div class="bonus-inputs">
             <div class="bonus-item">
                 <label>🎉 活动奖励 %</label>
-                <input type="number" id="activityPercent" value="3" step="0.5" min="0">
+                <input type="number" id="activityPercent" value="0" step="0.5" min="0">
                 <span class="calc-hint" id="activityHint">基于差价</span>
             </div>
             <div class="bonus-item">
                 <label>🎁 额外奖励 %</label>
-                <input type="number" id="extraPercent" value="5" step="0.5" min="0">
+                <input type="number" id="extraPercent" value="0" step="0.5" min="0">
                 <span class="calc-hint" id="extraHint">基于差价</span>
             </div>
         </div>
@@ -444,10 +445,7 @@
 
     <div class="speech-card" id="speechCard">
         <div class="speech-title" id="speechTitle">🎊 恭喜您成功从 <span class="hl">R1</span> 晋升至 <span class="hl">R2</span></div>
-        <div class="refund-badge" id="refundBlock">
-            💰 晋升礼包已到账：<br>
-            ✅ 全额退还：R1保障金已原路返还
-        </div>
+        <div class="refund-badge" id="refundBlock"></div>
         <div id="extraFeaturesBlock" style="margin: 10px 0 12px 0; font-weight: 500;"></div>
         <div class="income-dashboard" id="incomeBlock">
             <div class="income-stat"><span class="label">每个工作日</span><div class="value" id="dailyIncome">RM 15.00</div></div>
@@ -546,8 +544,7 @@
             }
         }
 
-        // 核心：生成无空行话术 (全部使用 \n 但去除多余空行，这里保证段内换行但段落之间没有空行)
-        // 完全删除空行: 最终字符串中不包含两个连续的换行符，每个部分之间直接单换行衔接。
+        // 生成无空行话术（紧凑）
         function generateOptimizedSpeech() {
             const from = fromLevel;
             const to = toLevel;
@@ -561,42 +558,45 @@
             const cashActive = cashEnabled;
             const luckyActive = luckyEnabled;
 
-            const hasActivity = activityBonus > 0;
-            const hasExtra = extraBonus > 0;
-            const hasAnyBonus = hasActivity || hasExtra;
+            const hasAnyBonus = (activityBonus > 0 || extraBonus > 0);
+            
+            // title
+            let titleRaw = '';
+            if(currentLang === 'cn') titleRaw = `🎊 恭喜您成功从 *${from}* 晋升至 *${to}*\n您的财富增长之路，正式迈入新阶段！📈`;
+            else if(currentLang === 'en') titleRaw = `🎊 Congratulations on your promotion from *${from}* to *${to}*\nYour wealth growth journey has officially entered a new stage! 📈`;
+            else titleRaw = `🎊 Tahniah atas kenaikan pangkat anda dari *${from}* ke *${to}*\nPerjalanan pertumbuhan kekayaan anda memasuki peringkat baharu! 📈`;
 
+            // 晋升礼包部分：有奖励时显示完整版，无奖励时只显示全额退还（不加标题头）
             let rewardDetail = '';
-            if(currentLang === 'cn'){
-                if(hasAnyBonus){
+            if(hasAnyBonus) {
+                // 有奖励：显示完整礼包（含标题头、退还、奖励明细、总计）
+                if(currentLang === 'cn'){
                     let line = `💰 *晋升礼包已到账*：\n✅ *全额退还*：${from}保障金已原路返还`;
-                    if(hasActivity) line += `\n✅ *活动奖励*：${formatMoneyRM(activityBonus)}`;
-                    if(hasExtra) line += ` + *额外奖励*：${formatMoneyRM(extraBonus)}`;
+                    if(activityBonus > 0) line += `\n✅ *活动奖励*：${formatMoneyRM(activityBonus)}`;
+                    if(extraBonus > 0) line += ` + *额外奖励*：${formatMoneyRM(extraBonus)}`;
                     line += `\n🎁 总计 ${formatMoneyRM(totalBonus)} 奖励已存入您的 RS 账户！`;
                     rewardDetail = line;
-                } else {
-                    rewardDetail = `💰 *晋升礼包已到账*：\n✅ *全额退还*：${from}保障金已原路返还`;
-                }
-            } 
-            else if(currentLang === 'en'){
-                if(hasAnyBonus){
+                } else if(currentLang === 'en'){
                     let line = `💰 *Promotion Gift Credited*:\n✅ *Full Refund*: ${from} deposit returned`;
-                    if(hasActivity) line += `\n✅ *Activity Bonus*: ${formatMoneyRM(activityBonus)}`;
-                    if(hasExtra) line += ` + *Extra Bonus*: ${formatMoneyRM(extraBonus)}`;
+                    if(activityBonus > 0) line += `\n✅ *Activity Bonus*: ${formatMoneyRM(activityBonus)}`;
+                    if(extraBonus > 0) line += ` + *Extra Bonus*: ${formatMoneyRM(extraBonus)}`;
                     line += `\n🎁 Total ${formatMoneyRM(totalBonus)} credited to your RS account!`;
                     rewardDetail = line;
                 } else {
-                    rewardDetail = `💰 *Promotion Gift Credited*:\n✅ *Full Refund*: ${from} deposit returned`;
-                }
-            } 
-            else {
-                if(hasAnyBonus){
                     let line = `💰 *Hadiah Kenaikan Pangkat Dikreditkan*:\n✅ *Bayaran Balik Penuh*: Deposit ${from} dikembalikan`;
-                    if(hasActivity) line += `\n✅ *Bonus Aktiviti*: ${formatMoneyRM(activityBonus)}`;
-                    if(hasExtra) line += ` + *Bonus Tambahan*: ${formatMoneyRM(extraBonus)}`;
+                    if(activityBonus > 0) line += `\n✅ *Bonus Aktiviti*: ${formatMoneyRM(activityBonus)}`;
+                    if(extraBonus > 0) line += ` + *Bonus Tambahan*: ${formatMoneyRM(extraBonus)}`;
                     line += `\n🎁 Jumlah ${formatMoneyRM(totalBonus)} dimasukkan ke akaun RS anda!`;
                     rewardDetail = line;
+                }
+            } else {
+                // 无奖励：只显示全额退还，不加标题头
+                if(currentLang === 'cn'){
+                    rewardDetail = `✅ *全额退还*：${from}保障金已原路返还`;
+                } else if(currentLang === 'en'){
+                    rewardDetail = `✅ *Full Refund*: ${from} deposit returned`;
                 } else {
-                    rewardDetail = `💰 *Hadiah Kenaikan Pangkat Dikreditkan*:\n✅ *Bayaran Balik Penuh*: Deposit ${from} dikembalikan`;
+                    rewardDetail = `✅ *Bayaran Balik Penuh*: Deposit ${from} dikembalikan`;
                 }
             }
 
@@ -628,25 +628,19 @@
             else if(currentLang === 'en') closingLine = '🐄💪 Time will give the best answer, let’s create more possibilities! ✨';
             else closingLine = '🐄💪 Masa akan memberikan jawapan terbaik, mari kita cipta lebih banyak kemungkinan! ✨';
 
-            let titleRaw = '';
-            if(currentLang === 'cn') titleRaw = `🎊 恭喜您成功从 *${from}* 晋升至 *${to}*\n您的财富增长之路，正式迈入新阶段！📈`;
-            else if(currentLang === 'en') titleRaw = `🎊 Congratulations on your promotion from *${from}* to *${to}*\nYour wealth growth journey has officially entered a new stage! 📈`;
-            else titleRaw = `🎊 Tahniah atas kenaikan pangkat anda dari *${from}* ke *${to}*\nPerjalanan pertumbuhan kekayaan anda memasuki peringkat baharu! 📈`;
-
-            // 构建无空行版本：按照顺序直接拼接，各部分之间只有一个 \n（而不是两个）
-            let parts = [titleRaw, rewardDetail];
+            let parts = [titleRaw];
+            if(rewardDetail) parts.push(rewardDetail);
             if(cashText) parts.push(cashText);
             if(luckyText) parts.push(luckyText);
             parts.push(incomeSection);
             parts.push(closingLine);
             
-            // 用单换行连接，确保没有多余空行（连续两个\n的情况不会出现）
             let fullSpeech = parts.join('\n');
-            // 额外清理可能因为部分空串导致的多余换行 (安全)
             fullSpeech = fullSpeech.replace(/\n{2,}/g, '\n');
             return fullSpeech;
         }
 
+        // UI预览更新
         function updatePreviewUI() {
             const from = fromLevel;
             const to = toLevel;
@@ -658,6 +652,7 @@
             const hasExt = extraBonus > 0;
             const hasAny = hasAct || hasExt;
 
+            // 标题
             if(currentLang === 'cn'){
                 speechTitleSpan.innerHTML = `🎊 恭喜您成功从 <span class="hl">${from}</span> 晋升至 <span class="hl">${to}</span><br>您的财富增长之路，正式迈入新阶段！📈`;
             } else if(currentLang === 'en'){
@@ -666,42 +661,43 @@
                 speechTitleSpan.innerHTML = `🎊 Tahniah atas kenaikan pangkat anda dari <span class="hl">${from}</span> ke <span class="hl">${to}</span><br>Perjalanan pertumbuhan kekayaan anda memasuki peringkat baharu! 📈`;
             }
 
+            // 礼包区块：有奖励时完整显示，无奖励时只显示退还（无标题头）
             let rewardHtml = '';
-            if(currentLang === 'cn'){
-                if(hasAny){
+            if(hasAny){
+                if(currentLang === 'cn'){
                     let base = `💰 <strong>晋升礼包已到账</strong>：<br>✅ <strong>全额退还</strong>：${from}保障金已原路返还`;
                     if(hasAct) base += `<br>✅ <strong>活动奖励</strong>：${formatMoneyRM(activityBonus)}`;
                     if(hasExt) base += ` + <strong>额外奖励</strong>：${formatMoneyRM(extraBonus)}`;
                     base += `<br>🎁 总计 ${formatMoneyRM(total)} 奖励已存入您的 RS 账户！`;
                     rewardHtml = base;
-                } else {
-                    rewardHtml = `💰 <strong>晋升礼包已到账</strong>：<br>✅ <strong>全额退还</strong>：${from}保障金已原路返还`;
-                }
-            } 
-            else if(currentLang === 'en'){
-                if(hasAny){
+                } 
+                else if(currentLang === 'en'){
                     let base = `💰 <strong>Promotion Gift Credited</strong>:<br>✅ <strong>Full Refund</strong>: ${from} deposit returned`;
                     if(hasAct) base += `<br>✅ <strong>Activity Bonus</strong>: ${formatMoneyRM(activityBonus)}`;
                     if(hasExt) base += ` + <strong>Extra Bonus</strong>: ${formatMoneyRM(extraBonus)}`;
                     base += `<br>🎁 Total ${formatMoneyRM(total)} credited to your RS account!`;
                     rewardHtml = base;
-                } else {
-                    rewardHtml = `💰 <strong>Promotion Gift Credited</strong>:<br>✅ <strong>Full Refund</strong>: ${from} deposit returned`;
-                }
-            } 
-            else {
-                if(hasAny){
+                } 
+                else {
                     let base = `💰 <strong>Hadiah Kenaikan Pangkat Dikreditkan</strong>:<br>✅ <strong>Bayaran Balik Penuh</strong>: Deposit ${from} dikembalikan`;
                     if(hasAct) base += `<br>✅ <strong>Bonus Aktiviti</strong>: ${formatMoneyRM(activityBonus)}`;
                     if(hasExt) base += ` + <strong>Bonus Tambahan</strong>: ${formatMoneyRM(extraBonus)}`;
                     base += `<br>🎁 Jumlah ${formatMoneyRM(total)} dimasukkan ke akaun RS anda!`;
                     rewardHtml = base;
+                }
+            } else {
+                // 无奖励：只显示退还，无标题头
+                if(currentLang === 'cn'){
+                    rewardHtml = `✅ <strong>全额退还</strong>：${from}保障金已原路返还`;
+                } else if(currentLang === 'en'){
+                    rewardHtml = `✅ <strong>Full Refund</strong>: ${from} deposit returned`;
                 } else {
-                    rewardHtml = `💰 <strong>Hadiah Kenaikan Pangkat Dikreditkan</strong>:<br>✅ <strong>Bayaran Balik Penuh</strong>: Deposit ${from} dikembalikan`;
+                    rewardHtml = `✅ <strong>Bayaran Balik Penuh</strong>: Deposit ${from} dikembalikan`;
                 }
             }
             refundBlockDiv.innerHTML = rewardHtml;
 
+            // 现金代码 + 抽奖区块（独立显示）
             let extraHtml = '';
             if(cashEnabled){
                 if(currentLang === 'cn') extraHtml += '<div style="background:#FDF6E3; border-radius: 60px; padding: 8px 16px; margin: 8px 0;">💵 *现金代码已发放，请查收* 💪</div>';
@@ -803,6 +799,10 @@
             grid.innerHTML = levels.map(l => `<div class="level-card-mini"><strong>${l}</strong><br>RM ${levelData[l].daily}/日</div>`).join('');
         }
         renderLevelGrid();
+        
+        // 默认将活动奖励和额外奖励设为0，方便测试无奖励场景
+        activityPercentInput.value = '0';
+        extraPercentInput.value = '0';
         refreshAll();
     })();
 </script>
